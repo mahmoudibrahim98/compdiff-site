@@ -145,6 +145,102 @@ a:hover {
   text-align: center;
 }
 
+.section__lede {
+  color: var(--muted);
+  max-width: 700px;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.gallery__toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.gallery__tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.gallery__tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.gallery__tab.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.gallery__grid {
+  display: grid;
+  grid-template-columns: auto repeat(8, 1fr);
+  gap: 4px;
+  margin: 1.5rem auto 0;
+}
+
+.gallery__corner {
+  /* empty top-left */
+}
+
+.gallery__colhead,
+.gallery__rowhead {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 0.25rem 0;
+}
+
+.gallery__rowhead {
+  text-align: right;
+  padding-right: 0.5rem;
+  align-self: center;
+}
+
+.gallery__cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.gallery__cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__cell:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+}
+
+.gallery__cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.gallery--fading .gallery__cell img {
+  opacity: 0.3;
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;
