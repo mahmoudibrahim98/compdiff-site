@@ -1,0 +1,25 @@
+/* CompDiff site styles — scaffolding */
+:root {
+  --text: #1a1a1a;
+  --bg: #ffffff;
+  --accent: #2b7a78;
+  --muted: #555555;
+  --border: #d0d0d0;
+  --max-width: 880px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
