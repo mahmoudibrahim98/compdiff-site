@@ -119,6 +119,15 @@
         <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Hispanic"><img alt="60-80 male Hispanic, generated" src=""></button>
       </div>
     </section>
+
+    <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+      <button type="button" class="lightbox__close" aria-label="Close">&times;</button>
+      <img class="lightbox__img" alt="">
+      <div class="lightbox__meta">
+        <h3 id="lightbox-title" class="lightbox__title"></h3>
+        <p class="lightbox__prompt"></p>
+      </div>
+    </div>
   </main>
   <script src="assets/js/gallery.js" defer></script>
 </body>
