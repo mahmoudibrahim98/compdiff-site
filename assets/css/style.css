@@ -122,6 +122,29 @@ a:hover {
   color: var(--muted);
 }
 
+.figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.figure figcaption {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 0.75rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;
