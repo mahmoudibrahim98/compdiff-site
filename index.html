@@ -63,6 +63,62 @@
         </figcaption>
       </figure>
     </section>
+
+    <section id="gallery">
+      <h2>Intersectional Gallery</h2>
+      <p class="section__lede">
+        Generated chest X-rays across age × sex × race/ethnicity intersections.
+        Use the toggle to compare Baseline Stable Diffusion, FairDiffusion, and CompDiff.
+      </p>
+
+      <div class="gallery__toggle" role="tablist" aria-label="Generation method">
+        <button type="button" class="gallery__tab" data-method="baseline" role="tab" aria-selected="false">Baseline SD</button>
+        <button type="button" class="gallery__tab" data-method="fairdiffusion" role="tab" aria-selected="false">FairDiffusion</button>
+        <button type="button" class="gallery__tab is-active" data-method="compdiff" role="tab" aria-selected="true">CompDiff</button>
+      </div>
+
+      <div class="gallery__grid" id="gallery-grid">
+        <div class="gallery__corner" aria-hidden="true"></div>
+        <div class="gallery__colhead">F-White</div>
+        <div class="gallery__colhead">F-Black</div>
+        <div class="gallery__colhead">F-Asian</div>
+        <div class="gallery__colhead">F-Hispanic</div>
+        <div class="gallery__colhead">M-White</div>
+        <div class="gallery__colhead">M-Black</div>
+        <div class="gallery__colhead">M-Asian</div>
+        <div class="gallery__colhead">M-Hispanic</div>
+
+        <div class="gallery__rowhead">18&ndash;40</div>
+        <button class="gallery__cell" data-age="18-40" data-sex="F" data-race="White"><img alt="18-40 female White, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="F" data-race="Black"><img alt="18-40 female Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="F" data-race="Asian"><img alt="18-40 female Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="F" data-race="Hispanic"><img alt="18-40 female Hispanic, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="M" data-race="White"><img alt="18-40 male White, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="M" data-race="Black"><img alt="18-40 male Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="M" data-race="Asian"><img alt="18-40 male Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="18-40" data-sex="M" data-race="Hispanic"><img alt="18-40 male Hispanic, generated" src=""></button>
+
+        <div class="gallery__rowhead">40&ndash;60</div>
+        <button class="gallery__cell" data-age="40-60" data-sex="F" data-race="White"><img alt="40-60 female White, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="F" data-race="Black"><img alt="40-60 female Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="F" data-race="Asian"><img alt="40-60 female Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="F" data-race="Hispanic"><img alt="40-60 female Hispanic, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="M" data-race="White"><img alt="40-60 male White, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="M" data-race="Black"><img alt="40-60 male Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="M" data-race="Asian"><img alt="40-60 male Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="40-60" data-sex="M" data-race="Hispanic"><img alt="40-60 male Hispanic, generated" src=""></button>
+
+        <div class="gallery__rowhead">60&ndash;80</div>
+        <button class="gallery__cell" data-age="60-80" data-sex="F" data-race="White"><img alt="60-80 female White, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="F" data-race="Black"><img alt="60-80 female Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="F" data-race="Asian"><img alt="60-80 female Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="F" data-race="Hispanic"><img alt="60-80 female Hispanic, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="White"><img alt="60-80 male White, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Black"><img alt="60-80 male Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Asian"><img alt="60-80 male Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Hispanic"><img alt="60-80 male Hispanic, generated" src=""></button>
+      </div>
+    </section>
   </main>
   <script src="assets/js/gallery.js" defer></script>
 </body>
