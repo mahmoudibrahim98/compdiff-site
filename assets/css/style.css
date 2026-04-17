@@ -810,6 +810,225 @@ a:hover {
   margin: 1rem 0 0;
 }
 
+/* Interactive bar charts ------------------------------------------------- */
+
+.charts {
+  margin: 1.5rem 0 2rem;
+}
+
+/* Method colours — Baseline/FairDiffusion/CompDiff */
+:root {
+  --bar-baseline: #bdcad1;
+  --bar-fairdiffusion: #d18e82;
+  --bar-compdiff: #2b7a78;
+  --bar-baseline-hover: #9caab3;
+  --bar-fairdiffusion-hover: #b07166;
+  --bar-compdiff-hover: #1f5b5a;
+}
+
+.charts__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+}
+
+.charts__swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 0.15rem;
+}
+
+.charts__swatch--baseline      { background: var(--bar-baseline); }
+.charts__swatch--fairdiffusion { background: var(--bar-fairdiffusion); }
+.charts__swatch--compdiff      { background: var(--bar-compdiff); }
+
+.charts__legend-sep {
+  color: var(--border);
+  margin: 0 0.2rem;
+}
+
+.charts__best-marker {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #bdcad1;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  vertical-align: middle;
+  margin: 0 0.25rem 0 0.15rem;
+}
+
+.charts__star {
+  color: var(--accent);
+  font-size: 0.9em;
+  margin: 0 0.1rem 0 0.2rem;
+}
+
+.charts__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+}
+
+.plot {
+  margin: 0;
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem 0.45rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.plot__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 0.9rem;
+  white-space: nowrap;
+}
+
+.plot__groups {
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+  justify-content: center;
+  flex: 1;
+}
+
+.plot--single .plot__groups {
+  justify-content: center;
+}
+
+.plot__group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+  min-width: 0;
+}
+
+.plot__bars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  align-items: end;
+  height: 135px;
+}
+
+.plot__bar {
+  position: relative;
+  border-radius: 3px 3px 0 0;
+  height: 0;
+  margin-top: auto;
+  min-height: 22px;
+  transition:
+    height 0.7s cubic-bezier(0.22, 0.68, 0, 1),
+    background-color 0.2s ease,
+    outline-color 0.2s ease;
+  cursor: default;
+}
+
+.plot__bar--in { height: var(--h-target, 0); }
+
+.plot__bar--baseline      { background: var(--bar-baseline); }
+.plot__bar--fairdiffusion { background: var(--bar-fairdiffusion); }
+.plot__bar--compdiff      { background: var(--bar-compdiff); }
+
+.plot__bar--baseline:hover      { background: var(--bar-baseline-hover); }
+.plot__bar--fairdiffusion:hover { background: var(--bar-fairdiffusion-hover); }
+.plot__bar--compdiff:hover      { background: var(--bar-compdiff-hover); }
+
+.plot__bar--best {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  z-index: 1;
+}
+
+.plot__bar--best::after {
+  content: "★";
+  position: absolute;
+  top: -1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent);
+  font-size: 0.78rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.plot__value {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease 0.45s;
+}
+
+.plot__bar--in .plot__value { opacity: 1; }
+
+/* On the lighter Baseline bar, dark text reads better than white */
+.plot__bar--baseline .plot__value {
+  color: #2a2a2a;
+  text-shadow: none;
+}
+
+.plot__group-label {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 0.45rem;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.charts__caption {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+  margin: 1rem 0 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 880px) {
+  .charts__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .charts__grid {
+    grid-template-columns: 1fr;
+  }
+  .plot__bars { height: 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plot__bar {
+    transition: background-color 0.2s ease;
+  }
+  .plot__value { transition: none; opacity: 1; }
+}
+
 .bibtex {
   position: relative;
   margin: 1rem 0;

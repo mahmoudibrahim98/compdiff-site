@@ -204,14 +204,22 @@
 
     <section id="results">
       <h2>Results</h2>
-      <figure class="figure">
-        <img src="assets/img/cross_modality_quality_metrics.png" alt="Bar charts comparing FID, FID-RadImageNet, and related quality metrics across CompDiff, the v0 baseline, FairDiffusion, and additional ablations on chest X-ray and fundus datasets.">
-        <figcaption>
-          Cross-modality generation quality metrics. CompDiff (HCN) consistently improves
-          FID and RadImageNet FID over the v0 baseline and FairDiffusion across both
-          chest X-ray (MIMIC-CXR) and fundus (FairGenMed) datasets.
-        </figcaption>
-      </figure>
+      <div class="charts" aria-label="Interactive bar charts of test-set metrics">
+        <div class="charts__legend" aria-hidden="true">
+          <span class="charts__swatch charts__swatch--baseline"></span> Baseline SD
+          <span class="charts__swatch charts__swatch--fairdiffusion"></span> FairDiffusion
+          <span class="charts__swatch charts__swatch--compdiff"></span> CompDiff
+          <span class="charts__legend-sep">·</span>
+          <span class="charts__best-marker" aria-hidden="true"></span> <span class="charts__star" aria-hidden="true">★</span> best in group
+        </div>
+        <div class="charts__grid" id="charts-grid" aria-live="polite">
+          <!-- Populated by JS — 2x4 plots: image-quality + demographic-control metrics -->
+        </div>
+        <p class="charts__caption">
+          Top row: cross-modality metrics (chest &amp; fundus). Bottom row: demographic-control
+          metrics on chest X-ray only. Hover a bar for details.
+        </p>
+      </div>
 
       <h3 class="results__subhead">Table 1 &mdash; Overall generation quality and fairness</h3>
       <p class="section__caption">

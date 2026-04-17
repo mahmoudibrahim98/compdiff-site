@@ -274,6 +274,145 @@
     bindCrosshair(t);
   });
 
+  // -------------------------------------------------------------
+  // Interactive bar charts for Results section (replaces static PNG).
+  // 8 metrics, 2x4 grid. Values sourced from each run's
+  // test_manifest.json (documented beside each number).
+  // -------------------------------------------------------------
+  (function renderCharts() {
+    var grid = document.getElementById("charts-grid");
+    if (!grid) return;
+
+    // Values from test_manifest.json per method/modality (canonical checkpoints):
+    //   chest: baseline step-10k / FairDiffusion step-7.5k / CompDiff step-20k
+    //   fundus: all three at step-11k
+    var METRICS = [
+      // ---------- Top row: both modalities ----------
+      {
+        label: "FID", dir: "lower", prec: 1,
+        chest:  { baseline: 78.4, fairdiffusion: 75.3, compdiff: 63.9 },
+        fundus: { baseline: 76.2, fairdiffusion: 63.3, compdiff: 55.3 },
+      },
+      {
+        label: "FID-RadImageNet", dir: "lower", prec: 2,
+        chest:  { baseline: 8.44, fairdiffusion: 6.15, compdiff: 6.70 },
+        fundus: { baseline: 6.31, fairdiffusion: 4.91, compdiff: 4.68 },
+      },
+      {
+        label: "MS-SSIM", dir: null, prec: 2,       // range metric — no "best"
+        chest:  { baseline: 0.32, fairdiffusion: 0.36, compdiff: 0.33 },
+        fundus: { baseline: 0.35, fairdiffusion: 0.33, compdiff: 0.35 },
+      },
+      {
+        label: "Mean AUROC", dir: "higher", prec: 2,
+        chest:  { baseline: 0.80, fairdiffusion: 0.69, compdiff: 0.82 },
+        fundus: { baseline: 0.94, fairdiffusion: 0.93, compdiff: 0.96 },
+      },
+      // ---------- Bottom row: chest only ----------
+      {
+        label: "BioViL", dir: "higher", prec: 2, chestOnly: true,
+        chest:  { baseline: 0.27, fairdiffusion: 0.28, compdiff: 0.40 },
+      },
+      {
+        label: "Sex accuracy", dir: "higher", prec: 2, chestOnly: true,
+        chest:  { baseline: 1.00, fairdiffusion: 1.00, compdiff: 0.99 },
+      },
+      {
+        label: "Race accuracy", dir: "higher", prec: 2, chestOnly: true,
+        chest:  { baseline: 0.98, fairdiffusion: 0.98, compdiff: 0.94 },
+      },
+      {
+        label: "Age RMSE", dir: "lower", prec: 2, chestOnly: true,
+        chest:  { baseline: 5.64, fairdiffusion: 5.10, compdiff: 8.75 },
+      },
+    ];
+
+    var METHODS = [
+      { id: "baseline",      short: "Baseline"      },
+      { id: "fairdiffusion", short: "FairDiffusion" },
+      { id: "compdiff",      short: "CompDiff"      },
+    ];
+    var MODALITY_LABELS = { chest: "Chest", fundus: "Fundus" };
+
+    function pickBest(values, dir) {
+      if (!dir) return null;
+      var valid = values.filter(function (v) { return typeof v === "number" && !isNaN(v); });
+      if (!valid.length) return null;
+      return dir === "higher" ? Math.max.apply(null, valid) : Math.min.apply(null, valid);
+    }
+
+    function buildGroup(metric, modalityKey) {
+      var vals = METHODS.map(function (m) { return (metric[modalityKey] || {})[m.id]; });
+      // Choose scale: floor >0 for AUROC/accuracy/MS-SSIM so tiny differences are visible
+      var label = metric.label;
+      var floorMap = { "Mean AUROC": 0.5, "BioViL": 0, "Sex accuracy": 0, "Race accuracy": 0, "MS-SSIM": 0 };
+      var baseline = label in floorMap ? floorMap[label] : 0;
+      var maxV = Math.max.apply(null, vals.filter(function (v) { return typeof v === "number"; }));
+      var span = Math.max(maxV - baseline, 1e-6);
+      var best = pickBest(vals, metric.dir);
+
+      var group = document.createElement("div");
+      group.className = "plot__group";
+
+      var bars = document.createElement("div");
+      bars.className = "plot__bars";
+      METHODS.forEach(function (m, i) {
+        var v = vals[i];
+        var bar = document.createElement("div");
+        var isBest = (best !== null) && (v === best);
+        bar.className = "plot__bar plot__bar--" + m.id + (isBest ? " plot__bar--best" : "");
+        var pct = typeof v === "number" ? Math.max(3, (v - baseline) / span * 100) : 0;
+        bar.style.setProperty("--h-target", pct.toFixed(1) + "%");
+        bar.title = m.short + " — " + metric.label + ": " + v.toFixed(metric.prec);
+        bar.setAttribute("aria-label", m.short + " " + metric.label + " " + v.toFixed(metric.prec));
+
+        var val = document.createElement("span");
+        val.className = "plot__value";
+        val.textContent = v.toFixed(metric.prec);
+        bar.appendChild(val);
+
+        bars.appendChild(bar);
+      });
+      group.appendChild(bars);
+
+      var gLabel = document.createElement("div");
+      gLabel.className = "plot__group-label";
+      gLabel.textContent = MODALITY_LABELS[modalityKey] || modalityKey;
+      group.appendChild(gLabel);
+      return group;
+    }
+
+    function buildPlot(metric) {
+      var plot = document.createElement("figure");
+      plot.className = "plot" + (metric.chestOnly ? " plot--single" : "");
+
+      var title = document.createElement("figcaption");
+      title.className = "plot__title";
+      var arrow = metric.dir === "higher" ? " ↑" : metric.dir === "lower" ? " ↓" : "";
+      title.textContent = metric.label + arrow;
+      plot.appendChild(title);
+
+      var groups = document.createElement("div");
+      groups.className = "plot__groups";
+      groups.appendChild(buildGroup(metric, "chest"));
+      if (!metric.chestOnly) groups.appendChild(buildGroup(metric, "fundus"));
+      plot.appendChild(groups);
+      return plot;
+    }
+
+    grid.innerHTML = "";
+    METRICS.forEach(function (m) {
+      grid.appendChild(buildPlot(m));
+    });
+
+    // Animate bars from 0 to target height on next frame
+    requestAnimationFrame(function () {
+      grid.querySelectorAll(".plot__bar").forEach(function (b) {
+        b.classList.add("plot__bar--in");
+      });
+    });
+  })();
+
   // Intersectional-table modality toggle (Chest / Fundus)
   (function () {
     var tabs = document.querySelectorAll(".intersectional-tab");
