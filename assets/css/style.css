@@ -305,6 +305,38 @@ a:hover {
   .lightbox[aria-hidden="false"] { animation: none; }
 }
 
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.results-table th {
+  font-weight: 600;
+  color: var(--text);
+  background: #fafafa;
+}
+
+.results-table td strong {
+  color: var(--accent);
+}
+
+.section__note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 1rem 0 0;
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;

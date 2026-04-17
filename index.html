@@ -120,6 +120,51 @@
       </div>
     </section>
 
+    <section id="results">
+      <h2>Results</h2>
+      <figure class="figure">
+        <img src="assets/img/cross_modality_quality_metrics.png" alt="Bar charts comparing FID, FID-RadImageNet, and related quality metrics across CompDiff, the v0 baseline, FairDiffusion, and additional ablations on chest X-ray and fundus datasets.">
+        <figcaption>
+          Cross-modality generation quality metrics. CompDiff (HCN) consistently improves
+          FID and RadImageNet FID over the v0 baseline and FairDiffusion across both
+          chest X-ray (MIMIC-CXR) and fundus (FairGenMed) datasets.
+        </figcaption>
+      </figure>
+
+      <table class="results-table" aria-label="Headline quality metrics on chest X-ray">
+        <thead>
+          <tr><th>Metric</th><th>Baseline SD</th><th>FairDiffusion</th><th>CompDiff</th><th>Takeaway</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FID &darr;</td>
+            <td>—</td>
+            <td>75.1</td>
+            <td><strong>64.3</strong></td>
+            <td>CompDiff achieves the lowest overall FID on MIMIC-CXR.</td>
+          </tr>
+          <tr>
+            <td>FID-RadImageNet &darr;</td>
+            <td>—</td>
+            <td>—</td>
+            <td><strong>best</strong></td>
+            <td>Clinical-domain FID (RadImageNet backbone) favors CompDiff.</td>
+          </tr>
+          <tr>
+            <td>Zero-shot intersectional FID &darr;</td>
+            <td>—</td>
+            <td>—</td>
+            <td><strong>up to &minus;21%</strong></td>
+            <td>Improves FID on held-out demographic intersections by up to 21%.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="section__note">
+        See the <a href="https://arxiv.org/abs/2603.16551">paper</a> for full quantitative results,
+        ablations, and subgroup breakdowns.
+      </p>
+    </section>
+
     <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
       <button type="button" class="lightbox__close" aria-label="Close">&times;</button>
       <img class="lightbox__img" alt="">
