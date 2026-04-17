@@ -390,6 +390,63 @@ a:hover {
   margin: 0.35rem 0;
 }
 
+/* Tablets */
+@media (max-width: 880px) {
+  main {
+    padding: 2rem 1rem;
+  }
+
+  .hero__title {
+    font-size: 1.6rem;
+  }
+
+  .gallery__grid {
+    gap: 3px;
+  }
+
+  .gallery__colhead,
+  .gallery__rowhead {
+    font-size: 0.65rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .hero__title {
+    font-size: 1.35rem;
+  }
+
+  .gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery__corner,
+  .gallery__colhead,
+  .gallery__rowhead {
+    display: none;
+  }
+
+  .gallery__cell::before {
+    content: attr(data-age) " · " attr(data-sex) " · " attr(data-race);
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    text-align: center;
+    border-radius: 2px;
+  }
+
+  .results-table th,
+  .results-table td {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;
