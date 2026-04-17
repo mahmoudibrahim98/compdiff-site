@@ -377,6 +377,19 @@ a:hover {
   border-color: var(--accent);
 }
 
+.footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.footer p {
+  margin: 0.35rem 0;
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;
