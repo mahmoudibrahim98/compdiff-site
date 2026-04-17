@@ -90,4 +90,25 @@
     .catch(function () { /* ignore */ });
 
   applyMethod("compdiff");
+
+  // BibTeX copy button
+  var copyBtn = document.querySelector(".bibtex__copy");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", function () {
+      var target = document.querySelector(copyBtn.dataset.target);
+      if (!target) return;
+      var text = target.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        copyBtn.classList.add("is-copied");
+        copyBtn.textContent = "Copied!";
+        setTimeout(function () {
+          copyBtn.classList.remove("is-copied");
+          copyBtn.textContent = "Copy";
+        }, 1500);
+      }).catch(function () {
+        copyBtn.textContent = "Copy failed";
+        setTimeout(function () { copyBtn.textContent = "Copy"; }, 1500);
+      });
+    });
+  }
 })();

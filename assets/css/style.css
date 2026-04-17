@@ -337,6 +337,46 @@ a:hover {
   margin: 1rem 0 0;
 }
 
+.bibtex {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.bibtex pre {
+  background: #f6f6f6;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1rem 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.bibtex__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.bibtex__copy:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bibtex__copy.is-copied {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;
