@@ -130,12 +130,77 @@
         image quality high for the common ones.
       </p>
 
+      <div class="blueprint" aria-label="CompDiff architecture blueprint">
+        <div class="blueprint__row">
+          <div class="blueprint__box blueprint__box--input">
+            <div class="blueprint__kicker">Inputs · demographic</div>
+            <div class="blueprint__chips">
+              <span class="blueprint__chip">Age</span>
+              <span class="blueprint__chip">Sex</span>
+              <span class="blueprint__chip">Race</span>
+            </div>
+          </div>
+          <div class="blueprint__box blueprint__box--input">
+            <div class="blueprint__kicker">Input · clinical prompt</div>
+            <div class="blueprint__quote">&ldquo;Subtle opacity at the right lung base. No overt pulmonary edema.&rdquo;</div>
+          </div>
+        </div>
+
+        <div class="blueprint__arrows">
+          <span>↓</span><span>↓</span>
+        </div>
+
+        <div class="blueprint__row">
+          <div class="blueprint__box blueprint__box--hcn">
+            <div class="blueprint__badge">OURS</div>
+            <div class="blueprint__title">Hierarchical Conditioner Network (HCN)</div>
+            <ol class="blueprint__list">
+              <li>Embed each attribute in its own table</li>
+              <li>Compose via small MLP into one token</li>
+              <li>Auxiliary classifiers regularise the token</li>
+            </ol>
+            <div class="blueprint__out"><code>c</code> · demographic token</div>
+          </div>
+          <div class="blueprint__box blueprint__box--frozen">
+            <div class="blueprint__badge blueprint__badge--frozen">FROZEN</div>
+            <div class="blueprint__title">CLIP text encoder</div>
+            <div class="blueprint__sub">inherited from Stable Diffusion 2.1</div>
+            <div class="blueprint__out"><code>t</code> · text embeddings</div>
+          </div>
+        </div>
+
+        <div class="blueprint__arrows">
+          <span class="blueprint__arrow--merge">↘</span>
+          <span class="blueprint__merge-label">concat</span>
+          <span class="blueprint__arrow--merge">↙</span>
+        </div>
+
+        <div class="blueprint__box blueprint__box--join">
+          <div class="blueprint__title">Cross-attention context</div>
+          <code class="blueprint__code">[ c &nbsp;‖&nbsp; t ]</code>
+        </div>
+
+        <div class="blueprint__arrows"><span>↓</span></div>
+
+        <div class="blueprint__box blueprint__box--unet">
+          <div class="blueprint__badge blueprint__badge--tuned">LoRA-TUNED</div>
+          <div class="blueprint__title">Stable Diffusion 2.1 UNet</div>
+          <div class="blueprint__sub">latent-space denoising; context enters through cross-attention layers</div>
+        </div>
+
+        <div class="blueprint__arrows"><span>↓</span></div>
+
+        <div class="blueprint__box blueprint__box--output">
+          <div class="blueprint__title">Generated medical image</div>
+          <div class="blueprint__sub">matched to the requested demographic × clinical description</div>
+        </div>
+      </div>
+
       <figure class="figure">
-        <img src="assets/img/architecture.png" alt="CompDiff Hierarchical Conditioner Network architecture: demographic attributes (age, sex, race) are decomposed into separate embeddings and composed into a demographic token that is concatenated with CLIP embeddings and used as cross-attention context in Stable Diffusion.">
+        <img src="assets/img/architecture.png" alt="Original paper figure: CompDiff Hierarchical Conditioner Network architecture. Demographic attributes feed into HCN which produces a token that is concatenated with CLIP text embeddings and used as cross-attention context in Stable Diffusion.">
         <figcaption>
-          The Hierarchical Conditioner Network (HCN). Individual attribute embeddings on
-          the left are composed into a demographic token (centre), which joins the CLIP
-          text encoding on the way into Stable Diffusion's cross-attention (right).
+          Original paper schematic (full version with all auxiliary heads and HCN internals).
+          The blueprint above is a simplified data-flow view.
         </figcaption>
       </figure>
     </section>
