@@ -12,12 +12,15 @@
   var cells = gridEl.querySelectorAll(".gallery__cell");
   var lightboxImg = lightbox.querySelector(".lightbox__img");
   var lightboxTitle = lightbox.querySelector(".lightbox__title");
+  var lightboxSize = lightbox.querySelector(".lightbox__size");
   var lightboxPrompt = lightbox.querySelector(".lightbox__prompt");
   var lightboxClose = lightbox.querySelector(".lightbox__close");
 
   var currentMethod = "compdiff";
   var currentModality = "chest";
   var promptsByModality = { chest: {}, fundus: {} };
+  var samplesByModality = { chest: {}, fundus: {} };   // cell-key -> count available
+  var sampleIdxByCell = {};                            // cell-key -> current sample index
   var lastFocused = null;
 
   var MODALITY_NOTES = {
@@ -25,12 +28,78 @@
     fundus: "FairGenMed · test-set generations · no Hispanic samples in dataset (those cells shown as “no data”)"
   };
 
-  function srcFor(modality, method, age, sex, race) {
-    return "assets/img/gallery/" + modality + "/" + method + "/" + age + "_" + sex + "_" + race + ".png";
+  function srcFor(modality, method, age, sex, race, idx) {
+    return "assets/img/gallery/" + modality + "/" + method + "/" + age + "_" + sex + "_" + race + "_" + (idx || 0) + ".png";
   }
 
   function keyFor(cell) {
     return cell.dataset.age + "_" + cell.dataset.sex + "_" + cell.dataset.race;
+  }
+
+  function currentIdxForKey(key) {
+    return sampleIdxByCell[key] || 0;
+  }
+
+  // Internal "80plus" → user-visible "80+" (URL-safe filename stays "80plus")
+  function ageLabel(age) {
+    return age === "80plus" ? "80+" : age;
+  }
+
+  // Per-subgroup training-data representation (MIMIC-CXR chest; counts from
+  // the test split, which mirrors training distribution). Used to show a
+  // rarity chip on each cell.
+  var SIZE_BY_MODALITY = {
+    chest: {
+      "18-40_F_Asian": 48,    "18-40_F_Black": 280,  "18-40_F_Hispanic": 71,   "18-40_F_White": 295,
+      "18-40_M_Asian": 18,    "18-40_M_Black": 80,   "18-40_M_Hispanic": 73,   "18-40_M_White": 294,
+      "40-60_F_Asian": 39,    "40-60_F_Black": 296,  "40-60_F_Hispanic": 140,  "40-60_F_White": 686,
+      "40-60_M_Asian": 62,    "40-60_M_Black": 277,  "40-60_M_Hispanic": 153,  "40-60_M_White": 807,
+      "60-80_F_Asian": 53,    "60-80_F_Black": 294,  "60-80_F_Hispanic": 90,   "60-80_F_White": 811,
+      "60-80_M_Asian": 55,    "60-80_M_Black": 194,  "60-80_M_Hispanic": 62,   "60-80_M_White": 1232,
+      "80plus_F_Asian": 18,   "80plus_F_Black": 46,  "80plus_F_Hispanic": 16,  "80plus_F_White": 224,
+      "80plus_M_Asian": 5,    "80plus_M_Black": 22,  "80plus_M_Hispanic": 6,   "80plus_M_White": 292,
+    },
+    fundus: {}   // counts not provided — chips omitted for fundus
+  };
+
+  function rarityTier(pct) {
+    if (pct < 1)   return "rare";
+    if (pct < 3)   return "moderate";
+    if (pct < 8)   return "common";
+    return "majority";
+  }
+
+  // Stamp a display-safe age label on each cell + (on chest) add a count chip
+  cells.forEach(function (cell) {
+    cell.dataset.ageLabel = ageLabel(cell.dataset.age);
+    var chip = document.createElement("span");
+    chip.className = "gallery__cell-count";
+    cell.appendChild(chip);
+  });
+
+  function updateCountChips() {
+    var sizes = SIZE_BY_MODALITY[currentModality] || {};
+    var total = 0;
+    Object.keys(sizes).forEach(function (k) { total += sizes[k]; });
+    var legend = document.getElementById("gallery-legend");
+    if (legend) legend.classList.toggle("is-hidden", total === 0);
+    cells.forEach(function (cell) {
+      var chip = cell.querySelector(".gallery__cell-count");
+      if (!chip) return;
+      var key = keyFor(cell);
+      var n = sizes[key];
+      if (typeof n !== "number" || total === 0) {
+        chip.style.display = "none";
+        delete cell.dataset.rarity;
+        return;
+      }
+      var pct = (n / total) * 100;
+      var tier = rarityTier(pct);
+      chip.style.display = "";
+      chip.textContent = pct < 0.1 ? "<0.1%" : pct.toFixed(pct < 1 ? 2 : 1) + "%";
+      chip.title = "n = " + n + " (" + pct.toFixed(2) + "% of the dataset)";
+      cell.dataset.rarity = tier;
+    });
   }
 
   function applyMethod(method) {
@@ -47,17 +116,24 @@
     currentModality = modality;
     gridEl.dataset.modality = modality;
     if (noteEl) noteEl.textContent = MODALITY_NOTES[modality] || "";
+    updateCountChips();
     refreshGrid();
     modalityTabs.forEach(function (tab) {
       var active = tab.dataset.modality === modality;
       tab.classList.toggle("is-active", active);
       tab.setAttribute("aria-selected", active ? "true" : "false");
     });
-    // Lazy-load prompts for the active modality if not already loaded
+    // Lazy-load prompts + samples manifest for the active modality
     if (Object.keys(promptsByModality[modality]).length === 0) {
       fetch("assets/img/gallery/" + modality + "/prompts.json")
         .then(function (r) { return r.ok ? r.json() : {}; })
         .then(function (data) { promptsByModality[modality] = data; })
+        .catch(function () { /* ignore */ });
+    }
+    if (Object.keys(samplesByModality[modality]).length === 0) {
+      fetch("assets/img/gallery/" + modality + "/samples.json")
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (data) { samplesByModality[modality] = data; })
         .catch(function () { /* ignore */ });
     }
   }
@@ -66,13 +142,33 @@
     gridEl.classList.add("gallery--fading");
     cells.forEach(function (cell) {
       var img = cell.querySelector("img");
+      var key = keyFor(cell);
+      var idx = currentIdxForKey(key);
       // Reset any previous missing state before loading new src
       cell.classList.remove("gallery__cell--missing");
-      img.src = srcFor(currentModality, currentMethod, cell.dataset.age, cell.dataset.sex, cell.dataset.race);
+      img.src = srcFor(currentModality, currentMethod, cell.dataset.age, cell.dataset.sex, cell.dataset.race, idx);
     });
     setTimeout(function () {
       gridEl.classList.remove("gallery--fading");
     }, 200);
+  }
+
+  function shuffleAll() {
+    var counts = samplesByModality[currentModality] || {};
+    cells.forEach(function (cell) {
+      var key = keyFor(cell);
+      var n = counts[key] || 0;
+      if (n > 1) {
+        var cur = sampleIdxByCell[key] || 0;
+        // Pick a new index different from the current one if possible
+        var next;
+        do { next = Math.floor(Math.random() * n); } while (n > 1 && next === cur);
+        sampleIdxByCell[key] = next;
+      } else if (n === 1) {
+        sampleIdxByCell[key] = 0;
+      }
+    });
+    refreshGrid();
   }
 
   // Mark cells whose image fails to load (e.g. fundus Hispanic = no data)
@@ -87,16 +183,41 @@
     // Skip lightbox for missing cells
     if (cell.classList.contains("gallery__cell--missing")) return;
     var key = keyFor(cell);
+    var idx = currentIdxForKey(key);
     var methodLabel = {
       "baseline": "Baseline SD",
       "fairdiffusion": "FairDiffusion",
       "compdiff": "CompDiff"
     }[currentMethod];
     var modalityLabel = currentModality === "chest" ? "Chest X-ray" : "Fundus";
-    lightboxImg.src = srcFor(currentModality, currentMethod, cell.dataset.age, cell.dataset.sex, cell.dataset.race);
+    lightboxImg.src = srcFor(currentModality, currentMethod, cell.dataset.age, cell.dataset.sex, cell.dataset.race, idx);
     lightboxImg.alt = cell.querySelector("img").alt;
-    lightboxTitle.textContent = methodLabel + " · " + modalityLabel + " — " + cell.dataset.age + " · " + cell.dataset.sex + " · " + cell.dataset.race;
-    lightboxPrompt.textContent = (promptsByModality[currentModality] || {})[key] || "";
+    lightboxTitle.textContent = methodLabel + " · " + modalityLabel + " — " + ageLabel(cell.dataset.age) + " · " + cell.dataset.sex + " · " + cell.dataset.race;
+    var promptKey = key + "_" + idx;
+    var prompts = promptsByModality[currentModality] || {};
+    var sizes = SIZE_BY_MODALITY[currentModality] || {};
+
+    // Size chip (separate from prompt text)
+    if (typeof sizes[key] === "number") {
+      var total = 0;
+      Object.keys(sizes).forEach(function (k) { total += sizes[k]; });
+      var pct = (sizes[key] / total * 100);
+      var rarity = rarityTier(pct);
+      lightboxSize.style.display = "";
+      lightboxSize.dataset.rarity = rarity;
+      lightboxSize.innerHTML =
+        '<span class="lightbox__size-label">Subgroup size:</span> ' +
+        '<span class="lightbox__size-value">n = ' + sizes[key] + '</span>' +
+        '<span class="lightbox__size-sep">·</span>' +
+        '<span class="lightbox__size-pct">' + pct.toFixed(2) + '% of dataset</span>' +
+        '<span class="lightbox__size-tier">' + rarity + '</span>';
+    } else {
+      lightboxSize.style.display = "none";
+      lightboxSize.textContent = "";
+    }
+
+    lightboxPrompt.textContent = prompts[promptKey] || prompts[key] || "";
+    lightboxPrompt.style.display = lightboxPrompt.textContent ? "" : "none";
     lightbox.setAttribute("aria-hidden", "false");
     lastFocused = cell;
     lightboxClose.focus();
@@ -119,6 +240,15 @@
   cells.forEach(function (cell) {
     cell.addEventListener("click", function () { openLightbox(cell); });
   });
+
+  var shuffleBtn = document.getElementById("gallery-shuffle");
+  if (shuffleBtn) {
+    shuffleBtn.addEventListener("click", function () {
+      shuffleBtn.classList.add("is-spinning");
+      shuffleAll();
+      setTimeout(function () { shuffleBtn.classList.remove("is-spinning"); }, 600);
+    });
+  }
 
   lightboxClose.addEventListener("click", closeLightbox);
 

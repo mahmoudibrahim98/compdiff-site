@@ -217,13 +217,32 @@
         <button type="button" class="gallery__modality-tab" data-modality="fundus" role="tab" aria-selected="false">Fundus <span class="gallery__src">FairGenMed</span></button>
       </div>
 
-      <div class="gallery__toggle" role="tablist" aria-label="Generation method">
-        <button type="button" class="gallery__tab" data-method="baseline" role="tab" aria-selected="false">Baseline SD</button>
-        <button type="button" class="gallery__tab" data-method="fairdiffusion" role="tab" aria-selected="false">FairDiffusion</button>
-        <button type="button" class="gallery__tab is-active" data-method="compdiff" role="tab" aria-selected="true">CompDiff</button>
+      <div class="gallery__controls">
+        <div class="gallery__toggle" role="tablist" aria-label="Generation method">
+          <button type="button" class="gallery__tab" data-method="baseline" role="tab" aria-selected="false">Baseline SD</button>
+          <button type="button" class="gallery__tab" data-method="fairdiffusion" role="tab" aria-selected="false">FairDiffusion</button>
+          <button type="button" class="gallery__tab is-active" data-method="compdiff" role="tab" aria-selected="true">CompDiff</button>
+        </div>
+        <button type="button" class="gallery__shuffle" id="gallery-shuffle" aria-label="Shuffle images">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="16 3 21 3 21 8"/>
+            <line x1="4" y1="20" x2="21" y2="3"/>
+            <polyline points="21 16 21 21 16 21"/>
+            <line x1="15" y1="15" x2="21" y2="21"/>
+            <line x1="4" y1="4" x2="9" y2="9"/>
+          </svg>
+          Shuffle
+        </button>
       </div>
 
       <p class="gallery__note" id="gallery-note"></p>
+      <div class="gallery__legend" id="gallery-legend" aria-label="Subgroup rarity legend">
+        <span class="gallery__legend-caption">Each chip = subgroup's share of dataset:</span>
+        <span class="gallery__legend-item" data-rarity="rare"><span class="gallery__legend-chip"></span>Rare &lt; 1%</span>
+        <span class="gallery__legend-item" data-rarity="moderate"><span class="gallery__legend-chip"></span>Moderate 1–3%</span>
+        <span class="gallery__legend-item" data-rarity="common"><span class="gallery__legend-chip"></span>Common 3–8%</span>
+        <span class="gallery__legend-item" data-rarity="majority"><span class="gallery__legend-chip"></span>Majority &gt; 8%</span>
+      </div>
       <div class="gallery__grid" id="gallery-grid" data-modality="chest">
         <div class="gallery__corner" aria-hidden="true"></div>
         <div class="gallery__colhead">F-White</div>
@@ -264,6 +283,16 @@
         <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Black"><img alt="60-80 male Black, generated" src=""></button>
         <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Asian"><img alt="60-80 male Asian, generated" src=""></button>
         <button class="gallery__cell" data-age="60-80" data-sex="M" data-race="Hispanic"><img alt="60-80 male Hispanic, generated" src=""></button>
+
+        <div class="gallery__rowhead">80+</div>
+        <button class="gallery__cell" data-age="80plus" data-sex="F" data-race="White"><img alt="80+ female White, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="F" data-race="Black"><img alt="80+ female Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="F" data-race="Asian"><img alt="80+ female Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="F" data-race="Hispanic"><img alt="80+ female Hispanic, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="M" data-race="White"><img alt="80+ male White, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="M" data-race="Black"><img alt="80+ male Black, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="M" data-race="Asian"><img alt="80+ male Asian, generated" src=""></button>
+        <button class="gallery__cell" data-age="80plus" data-sex="M" data-race="Hispanic"><img alt="80+ male Hispanic, generated" src=""></button>
       </div>
     </section>
 
@@ -606,6 +635,7 @@
       <img class="lightbox__img" alt="">
       <div class="lightbox__meta">
         <h3 id="lightbox-title" class="lightbox__title"></h3>
+        <p class="lightbox__size"></p>
         <p class="lightbox__prompt"></p>
       </div>
     </div>
