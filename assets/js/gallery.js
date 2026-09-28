@@ -24,8 +24,8 @@
   var lastFocused = null;
 
   var MODALITY_NOTES = {
-    chest:  "MIMIC-CXR · test-set generations",
-    fundus: "FairGenMed · test-set generations · no Hispanic samples in dataset (those cells shown as “no data”)"
+    chest:  "MIMIC-CXR · generated samples",
+    fundus: "FairGenMed · generated samples · no Hispanic samples in dataset (those cells shown as “no data”)"
   };
 
   function srcFor(modality, method, age, sex, race, idx) {
@@ -185,7 +185,7 @@
     var key = keyFor(cell);
     var idx = currentIdxForKey(key);
     var methodLabel = {
-      "baseline": "Baseline SD",
+      "baseline": "RoentGen-v2",
       "fairdiffusion": "FairDiffusion",
       "compdiff": "CompDiff"
     }[currentMethod];
@@ -413,52 +413,63 @@
     var grid = document.getElementById("charts-grid");
     if (!grid) return;
 
-    // Values from test_manifest.json per method/modality (canonical checkpoints):
-    //   chest: baseline step-10k / FairDiffusion step-7.5k / CompDiff step-20k
-    //   fundus: all three at step-11k
+    // Values from the npj DM v2.2 manuscript, Figure 3 (results_numbers.tex macros):
+    // mean across three independently trained runs per method; *SD = standard deviation.
+    // Fundus mean AUROC has no SD in the manuscript.
     var METRICS = [
       // ---------- Top row: both modalities ----------
       {
         label: "FID", dir: "lower", prec: 1,
-        chest:  { baseline: 78.4, fairdiffusion: 75.3, compdiff: 63.9 },
-        fundus: { baseline: 76.2, fairdiffusion: 63.3, compdiff: 55.3 },
+        chest:  { baseline: 88.4, fairdiffusion: 85.6, compdiff: 74.7 },
+        chestSD:  { baseline: 4.7, fairdiffusion: 1.7, compdiff: 5.7 },
+        fundus: { baseline: 72.7, fairdiffusion: 64.2, compdiff: 60.1 },
+        fundusSD: { baseline: 3.7, fairdiffusion: 1.8, compdiff: 4.3 },
       },
       {
         label: "FID-RadImageNet", dir: "lower", prec: 2,
-        chest:  { baseline: 8.44, fairdiffusion: 6.15, compdiff: 6.70 },
-        fundus: { baseline: 6.31, fairdiffusion: 4.91, compdiff: 4.68 },
+        chest:  { baseline: 8.62, fairdiffusion: 8.85, compdiff: 6.64 },
+        chestSD:  { baseline: 0.51, fairdiffusion: 1.05, compdiff: 0.77 },
+        fundus: { baseline: 6.49, fairdiffusion: 5.51, compdiff: 5.76 },
+        fundusSD: { baseline: 0.28, fairdiffusion: 0.90, compdiff: 0.64 },
       },
       {
-        label: "MS-SSIM", dir: null, prec: 2,       // range metric — no "best"
-        chest:  { baseline: 0.32, fairdiffusion: 0.36, compdiff: 0.33 },
-        fundus: { baseline: 0.35, fairdiffusion: 0.33, compdiff: 0.35 },
+        label: "MS-SSIM", dir: null, prec: 2,       // range metric: no "best"
+        chest:  { baseline: 0.32, fairdiffusion: 0.32, compdiff: 0.36 },
+        chestSD:  { baseline: 0.01, fairdiffusion: 0.01, compdiff: 0.01 },
+        fundus: { baseline: 0.32, fairdiffusion: 0.33, compdiff: 0.33 },
+        fundusSD: { baseline: 0.02, fairdiffusion: 0.01, compdiff: 0.01 },
       },
       {
         label: "Mean AUROC", dir: "higher", prec: 2,
-        chest:  { baseline: 0.80, fairdiffusion: 0.69, compdiff: 0.82 },
-        fundus: { baseline: 0.94, fairdiffusion: 0.93, compdiff: 0.96 },
+        chest:  { baseline: 0.704, fairdiffusion: 0.720, compdiff: 0.754 },
+        chestSD:  { baseline: 0.011, fairdiffusion: 0.008, compdiff: 0.006 },
+        fundus: { baseline: 0.937, fairdiffusion: 0.917, compdiff: 0.975 },
       },
       // ---------- Bottom row: chest only ----------
       {
         label: "BioViL", dir: "higher", prec: 2, chestOnly: true,
-        chest:  { baseline: 0.27, fairdiffusion: 0.28, compdiff: 0.40 },
+        chest:  { baseline: 0.287, fairdiffusion: 0.334, compdiff: 0.326 },
+        chestSD:  { baseline: 0.025, fairdiffusion: 0.056, compdiff: 0.037 },
       },
       {
         label: "Sex accuracy", dir: "higher", prec: 2, chestOnly: true,
-        chest:  { baseline: 1.00, fairdiffusion: 1.00, compdiff: 0.99 },
+        chest:  { baseline: 0.995, fairdiffusion: 0.998, compdiff: 0.998 },
+        chestSD:  { baseline: 0.005, fairdiffusion: 0.002, compdiff: 0.001 },
       },
       {
         label: "Race accuracy", dir: "higher", prec: 2, chestOnly: true,
-        chest:  { baseline: 0.98, fairdiffusion: 0.98, compdiff: 0.94 },
+        chest:  { baseline: 0.980, fairdiffusion: 0.974, compdiff: 0.949 },
+        chestSD:  { baseline: 0.008, fairdiffusion: 0.010, compdiff: 0.021 },
       },
       {
         label: "Age RMSE", dir: "lower", prec: 2, chestOnly: true,
-        chest:  { baseline: 5.64, fairdiffusion: 5.10, compdiff: 8.75 },
+        chest:  { baseline: 6.50, fairdiffusion: 8.04, compdiff: 8.66 },
+        chestSD:  { baseline: 1.72, fairdiffusion: 2.62, compdiff: 0.53 },
       },
     ];
 
     var METHODS = [
-      { id: "baseline",      short: "Baseline"      },
+      { id: "baseline",      short: "RoentGen-v2"   },
       { id: "fairdiffusion", short: "FairDiffusion" },
       { id: "compdiff",      short: "CompDiff"      },
     ];
@@ -493,7 +504,9 @@
         bar.className = "plot__bar plot__bar--" + m.id + (isBest ? " plot__bar--best" : "");
         var pct = typeof v === "number" ? Math.max(3, (v - baseline) / span * 100) : 0;
         bar.style.setProperty("--h-target", pct.toFixed(1) + "%");
-        bar.title = m.short + " — " + metric.label + ": " + v.toFixed(metric.prec);
+        var sd = (metric[modalityKey + "SD"] || {})[m.id];
+        bar.title = m.short + " — " + metric.label + ": " + v.toFixed(metric.prec) +
+          (typeof sd === "number" ? " ± " + sd.toFixed(metric.prec) + " (SD, 3 runs)" : " (mean of 3 runs)");
         bar.setAttribute("aria-label", m.short + " " + metric.label + " " + v.toFixed(metric.prec));
 
         var val = document.createElement("span");

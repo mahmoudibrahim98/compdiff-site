@@ -6,18 +6,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-  <title>CompDiff: Hierarchical Compositional Diffusion for Fair and Zero-Shot Intersectional Medical Image Generation</title>
+  <title>CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion</title>
   <meta name="theme-color" content="#2b7a78">
-  <meta name="description" content="CompDiff: Hierarchical Compositional Diffusion for fair, zero-shot intersectional medical image generation across age, sex, and race/ethnicity. Paper site.">
+  <meta name="description" content="CompDiff composes supervised age, sex and race tokens with clinical text to generate chest X-rays and fundus images, including demographic intersections absent from training. Project site.">
   <link rel="canonical" href="https://mahmoudibrahim98.github.io/compdiff-site/">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="CompDiff: Hierarchical Compositional Diffusion for Fair and Zero-Shot Intersectional Medical Image Generation">
-  <meta property="og:description" content="Fair, zero-shot intersectional medical image generation across age, sex, and race/ethnicity. MICCAI 2026 submission (arXiv 2603.16551).">
+  <meta property="og:title" content="CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion">
+  <meta property="og:description" content="Compositional demographic conditioning for medical image generation at demographic intersections absent from training. Project site.">
   <meta property="og:url" content="https://mahmoudibrahim98.github.io/compdiff-site/">
   <meta property="og:image" content="https://mahmoudibrahim98.github.io/compdiff-site/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="CompDiff: Hierarchical Compositional Diffusion">
-  <meta name="twitter:description" content="Fair, zero-shot intersectional medical image generation across age, sex, and race/ethnicity.">
+  <meta name="twitter:title" content="CompDiff: compositional diffusion across demographic intersections">
+  <meta name="twitter:description" content="Compositional demographic conditioning for medical image generation at demographic intersections absent from training.">
   <meta name="twitter:image" content="https://mahmoudibrahim98.github.io/compdiff-site/assets/img/og-image.png">
   <link rel="icon" href="assets/img/favicon.ico" sizes="any">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -28,20 +28,27 @@
   <main>
     <header class="hero">
       <h1 class="hero__title">
-        CompDiff: Hierarchical Compositional Diffusion for Fair and Zero-Shot Intersectional Medical Image Generation
+        CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion
       </h1>
-      <p class="hero__conf">Under review at MICCAI 2026</p>
+      <!-- Status wording pending author decision (journal version under peer review). -->
+      <p class="hero__conf">Manuscript under review</p>
       <p class="hero__authors">
-        Mahmoud Ibrahim<sup>1,2,3</sup>&#8902;,
+        Mahmoud K. Ibrahim<sup>1,2,3</sup>&#8902;,
         Bart Elen<sup>3</sup>,
         Chang Sun<sup>1,2</sup>,
+        Ahmad Jiblawi<sup>4</sup>,
+        Mohammed M. Saleh<sup>5</sup>,
+        Maryam K. Ibrahim<sup>6</sup>,
         Gökhan Ertaylan<sup>3</sup>,
         Michel Dumontier<sup>1,2</sup>
       </p>
       <p class="hero__affil">
-        <sup>1</sup> Institute of Data Science, Maastricht University &nbsp;·&nbsp;
-        <sup>2</sup> Dept. of Advanced Computing Sciences, Maastricht University &nbsp;·&nbsp;
-        <sup>3</sup> VITO, Belgium
+        <sup>1</sup> Institute of Data Science, Faculty of Science and Engineering, Maastricht University, The Netherlands &nbsp;·&nbsp;
+        <sup>2</sup> Department of Advanced Computing Sciences, Faculty of Science and Engineering, Maastricht University, The Netherlands &nbsp;·&nbsp;
+        <sup>3</sup> VITO, Belgium &nbsp;·&nbsp;
+        <sup>4</sup> Icahn School of Medicine at Mount Sinai, The Mount Sinai Hospital, New York City, USA &nbsp;·&nbsp;
+        <sup>5</sup> Department of Radiology, Division of Abdominal Imaging, Massachusetts General Hospital, Harvard Medical School, Boston, USA &nbsp;·&nbsp;
+        <sup>6</sup> Division of Gastroenterology, Massachusetts General Hospital, Boston, USA
       </p>
       <p class="hero__corr">
         &#8902; <a href="mailto:mahmoud.ibrahim@vito.be">mahmoud.ibrahim@vito.be</a>
@@ -54,7 +61,7 @@
             <line x1="8" y1="13" x2="16" y2="13"/>
             <line x1="8" y1="17" x2="16" y2="17"/>
           </svg>
-          <span class="pill__label">Paper</span>
+          <span class="pill__label">arXiv &middot; earlier version</span>
         </a>
         <a class="resources__pill" href="https://github.com/mahmoudibrahim98/CompDiff" target="_blank" rel="noopener">
           <svg class="pill__icon" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
@@ -74,28 +81,35 @@
           </svg>
           <span class="pill__label">Model &middot; Fundus</span>
         </a>
+        <a class="resources__pill" href="https://huggingface.co/collections/mahmoudibra98/compdiff-fair-intersectional-medical-image-generation-6a54b3ce9a66aa70a8ad534d" target="_blank" rel="noopener">
+          <span class="pill__label">Hugging Face collection</span>
+        </a>
+        <!-- Synthetic dataset pill (huggingface.co/datasets/mahmoudibra98/compdiff-chest-xray-synthetic)
+             withheld until the dataset is public; the URL returned 401 on 2026-09-28. -->
       </nav>
     </header>
 
     <section id="summary">
       <h2>Summary</h2>
       <p>
-        Generators trained on demographically imbalanced medical datasets inherit those imbalances,
-        producing lower-quality images for rare subgroups and failing on demographic intersections
-        that never appeared in training. <strong>CompDiff</strong> addresses this <em>imbalanced
-        generator problem</em> at the representation level: a Hierarchical Conditioner Network (HCN)
-        factorizes demographic conditioning into shared components, enabling parameter sharing
-        across subgroups and <strong>zero-shot generation</strong> for unseen demographic
-        combinations. On chest X-rays and fundus images, CompDiff beats both standard fine-tuning
-        and FairDiffusion on overall FID (64.3 vs. 75.1 on chest), subgroup equity (ES-FID), and
-        generalization to held-out intersections (up to 21% FID improvement).
+        Generators trained on demographically imbalanced medical data can fail at demographic
+        intersections that never appear in training; we call this the <em>imbalanced generator
+        problem</em>. <strong>CompDiff</strong> takes age, sex and race out of the text prompt and
+        passes them through a Hierarchical Conditioner Network (HCN), which encodes each attribute
+        separately and composes supervised demographic tokens alongside the clinical text.
+        Across three independently trained runs per method, CompDiff reached the lowest mean FID on
+        chest X-rays (74.7 versus 88.4 for RoentGen-v2 and 85.6 for FairDiffusion) and on fundus
+        images (60.1 versus 72.7 and 64.2). It achieved the lowest mean FID-RadImageNet in all
+        <strong>16 chest X-ray intersections removed from training</strong>, and in a blinded study
+        two radiologists gave it the highest mean scores for realism and agreement with the clinical
+        impression on those unseen intersections.
       </p>
     </section>
 
     <section id="abstract">
       <h2>Abstract</h2>
       <p>
-        Generative models are increasingly used to augment medical imaging datasets for fairer AI. Yet a key assumption often goes unexamined: that generators themselves produce equally high-quality images across demographic groups. Models trained on imbalanced data can inherit these imbalances, yielding degraded synthesis quality for rare subgroups and struggling with demographic intersections absent from training. We refer to this as the <em>imbalanced generator problem</em>. Existing remedies such as loss reweighting operate at the optimization level and provide limited benefit when training signal is scarce or absent for certain combinations. We propose <strong>CompDiff</strong>, a hierarchical compositional diffusion framework that addresses this problem at the representation level. A dedicated Hierarchical Conditioner Network (HCN) decomposes demographic conditioning, producing a demographic token concatenated with CLIP embeddings as cross-attention context. This structured factorization encourages parameter sharing across subgroups and supports compositional generalization to rare or unseen demographic intersections. Experiments on chest X-rays (MIMIC-CXR) and fundus images (FairGenMed) show that CompDiff compares favorably against both standard fine-tuning and FairDiffusion across image quality (FID: 64.3 vs. 75.1), subgroup equity (ES-FID), and zero-shot intersectional generalization (up to 21% FID improvement on held-out intersections). Downstream classifiers trained on CompDiff-generated data also show improved AUROC and reduced demographic bias, suggesting that architectural design of demographic conditioning is an important and underexplored factor in fair medical image generation.
+        Medical image generators trained on imbalanced data can fail at demographic intersections absent from training. We introduce CompDiff, which encodes age, sex and race separately and composes supervised demographic tokens alongside clinical text. Across chest radiographs and fundus images, CompDiff improves overall and subgroup fidelity relative to prompt conditioning (RoentGen-v2) and loss reweighting (FairDiffusion). It generalises in zero-shot generation to 16 chest X-ray intersections excluded from training, achieving the lowest mean FID-RadImageNet in every intersection. In a blinded reader study of these unseen intersections, two radiologists gave CompDiff the highest mean scores among generators for anatomical realism and agreement with the clinical impression, and selected its images most often as the most realistic. Pretraining with CompDiff images improved downstream classification, while CompDiff audit cohorts reduced estimation error on rare intersections. These findings support compositional demographic conditioning for extending medical image synthesis to underserved populations.
       </p>
     </section>
 
@@ -103,35 +117,45 @@
       <h2>Method</h2>
 
       <p class="method__intro">
-        Standard diffusion models learn demographics from text prompts. That works when a
-        subgroup is well represented in training &mdash; but it struggles for rare
-        intersections and <em>completely fails</em> when a combination is missing entirely
-        (for example, no Age&nbsp;80+ Asian patients in the training set). CompDiff fixes
-        this at the representation level instead of the loss.
+        Prompt-conditioned generators such as RoentGen-v2 learn demographics from the text prompt.
+        On MIMIC-CXR, the rarest age &times; sex &times; race intersections contain only 47&ndash;92
+        training images, and combined with rare pathologies some intersections are absent altogether.
+        Reweighting the loss cannot help a group that has no training data. CompDiff instead treats
+        demographic identity as compositional: a rare intersection such as &ldquo;80+ Asian
+        female&rdquo; is composed from representations of age, sex and race learned from more
+        abundant cells.
       </p>
 
       <ol class="method__steps">
         <li>
-          <strong>Decompose.</strong> Age, sex, and race each get their own learned
-          embedding &mdash; the building blocks of every demographic intersection.
+          <strong>Encode.</strong> Age is encoded as a continuous value (sinusoidal features and an
+          MLP); sex and race each have their own learned categorical embedding. Demographics are
+          removed from the text prompt, which keeps only the clinical impression.
         </li>
         <li>
-          <strong>Compose.</strong> A small network (the Hierarchical Conditioner Network,
-          HCN) combines those embeddings into a single <em>demographic token</em> that
-          captures the full intersection.
+          <strong>Compose.</strong> Three pairwise MLPs combine age&nbsp;+&nbsp;sex,
+          age&nbsp;+&nbsp;race and sex&nbsp;+&nbsp;race, and a composition MLP fuses them into a
+          shared demographic context. Each attribute is projected with this context to its own
+          token, and a Gaussian latent supplies a fourth, composed token.
         </li>
         <li>
-          <strong>Condition.</strong> The demographic token is concatenated with the CLIP
-          text embeddings and handed to Stable Diffusion as cross-attention context,
-          alongside the clinical description.
+          <strong>Supervise.</strong> Auxiliary heads predict age, sex and race from their tokens and
+          the joint demographic label from the composed token, so each attribute survives to the
+          output.
+        </li>
+        <li>
+          <strong>Condition.</strong> The 4 demographic tokens (1,024 dimensions each) are
+          concatenated with CLIP&rsquo;s 77 text tokens as cross-attention context for the Stable
+          Diffusion 2.1 UNet.
         </li>
       </ol>
 
       <p class="method__intro">
-        Because the parts are learned separately and then composed, the model can produce
-        combinations it never saw during training &mdash; enabling <strong>zero-shot
-        generation</strong> for rare or unseen demographic intersections, while keeping
-        image quality high for the common ones.
+        Because attributes are learned separately and then composed, CompDiff can generate
+        intersections removed from training. Generation at those unseen intersections did not depend
+        on the factorised composer: an unstructured composer with a matched parameter count, keeping
+        the separate attribute encoders and supervised output tokens, preserved fidelity within each
+        withheld cell.
       </p>
 
       <div class="blueprint" aria-label="CompDiff architecture blueprint">
@@ -159,17 +183,18 @@
             <div class="blueprint__badge">OURS</div>
             <div class="blueprint__title">Hierarchical Conditioner Network (HCN)</div>
             <ol class="blueprint__list">
-              <li>Embed each attribute in its own table</li>
-              <li>Compose via small MLP into one token</li>
-              <li>Auxiliary classifiers regularise the token</li>
+              <li>Encode age continuously; sex and race as embeddings</li>
+              <li>Pairwise MLPs + composition MLP give a shared context</li>
+              <li>Project to age, sex, race and composed tokens</li>
+              <li>Auxiliary heads supervise each token (training only)</li>
             </ol>
-            <div class="blueprint__out"><code>c</code> · demographic token</div>
+            <div class="blueprint__out"><code>d</code> · 4 demographic tokens</div>
           </div>
           <div class="blueprint__box blueprint__box--frozen">
-            <div class="blueprint__badge blueprint__badge--frozen">FROZEN</div>
+            <div class="blueprint__badge blueprint__badge--frozen">TRAINED</div>
             <div class="blueprint__title">CLIP text encoder</div>
-            <div class="blueprint__sub">inherited from Stable Diffusion 2.1</div>
-            <div class="blueprint__out"><code>t</code> · text embeddings</div>
+            <div class="blueprint__sub">clinical impression only; unfrozen during training</div>
+            <div class="blueprint__out"><code>t</code> · 77 text tokens</div>
           </div>
         </div>
 
@@ -180,14 +205,14 @@
         </div>
 
         <div class="blueprint__box blueprint__box--join">
-          <div class="blueprint__title">Cross-attention context</div>
-          <code class="blueprint__code">[ c &nbsp;‖&nbsp; t ]</code>
+          <div class="blueprint__title">Cross-attention context (77 + 4 tokens)</div>
+          <code class="blueprint__code">[ t &nbsp;‖&nbsp; d ]</code>
         </div>
 
         <div class="blueprint__arrows"><span>↓</span></div>
 
         <div class="blueprint__box blueprint__box--unet">
-          <div class="blueprint__badge blueprint__badge--tuned">LoRA-TUNED</div>
+          <div class="blueprint__badge blueprint__badge--tuned">FINE-TUNED</div>
           <div class="blueprint__title">Stable Diffusion 2.1 UNet</div>
           <div class="blueprint__sub">latent-space denoising; context enters through cross-attention layers</div>
         </div>
@@ -201,10 +226,14 @@
       </div>
 
       <figure class="figure">
-        <img src="assets/img/architecture.png" alt="Original paper figure: CompDiff Hierarchical Conditioner Network architecture. Demographic attributes feed into HCN which produces a token that is concatenated with CLIP text embeddings and used as cross-attention context in Stable Diffusion.">
+        <img src="assets/img/paper/fig2_architecture.png" loading="lazy" alt="Paper Figure 2: (a) RoentGen-v2 encodes clinical and demographic text together through CLIP, while CompDiff encodes the clinical impression through CLIP and age, sex and race through the Hierarchical Conditioner Network, which adds 4 context tokens. (b) Inside HCN: attribute encoders, pairwise MLPs, a composition MLP, a Gaussian latent and four projected tokens with auxiliary supervision.">
         <figcaption>
-          Original paper schematic (full version with all auxiliary heads and HCN internals).
-          The blueprint above is a simplified data-flow view.
+          <strong>Paper Figure 2.</strong> (a) RoentGen-v2 encodes clinical and demographic text
+          together through CLIP&rsquo;s 77-token context; CompDiff encodes the clinical impression
+          through CLIP and age, sex and race through HCN, which supplies 4 additional context tokens.
+          (b) Inside HCN. The Gaussian latent is sampled during training and set to its mean at
+          inference; dashed arrows mark training-only supervision. The blueprint above is a
+          simplified data-flow view.
         </figcaption>
       </figure>
     </section>
@@ -212,8 +241,10 @@
     <section id="gallery">
       <h2>Intersectional Gallery</h2>
       <p class="section__lede">
-        Generated medical images across age × sex × race/ethnicity intersections.
-        Pick a modality, then toggle between Baseline Stable Diffusion, FairDiffusion, and CompDiff.
+        Generated medical images across age × sex × race intersections.
+        Pick a modality, then toggle between RoentGen-v2 (prompt conditioning, &ldquo;Baseline SD&rdquo;
+        in the paper&rsquo;s figures), FairDiffusion and CompDiff. The paper&rsquo;s Figure 7 draws its
+        natural-distribution rows from this gallery.
       </p>
 
       <div class="gallery__modality" role="tablist" aria-label="Modality">
@@ -223,7 +254,7 @@
 
       <div class="gallery__controls">
         <div class="gallery__toggle" role="tablist" aria-label="Generation method">
-          <button type="button" class="gallery__tab" data-method="baseline" role="tab" aria-selected="false">Baseline SD</button>
+          <button type="button" class="gallery__tab" data-method="baseline" role="tab" aria-selected="false">RoentGen-v2</button>
           <button type="button" class="gallery__tab" data-method="fairdiffusion" role="tab" aria-selected="false">FairDiffusion</button>
           <button type="button" class="gallery__tab is-active" data-method="compdiff" role="tab" aria-selected="true">CompDiff</button>
         </div>
@@ -302,304 +333,293 @@
 
     <section id="results">
       <h2>Results</h2>
-      <div class="charts" aria-label="Interactive bar charts of test-set metrics">
+      <p class="section__lede">
+        CompDiff is compared with RoentGen-v2 (demographics in the prompt) and FairDiffusion
+        (adaptive loss reweighting), all built on Stable Diffusion 2.1. Generation metrics are means
+        across three independently trained runs per method and modality.
+      </p>
+
+      <h3 class="results__subhead">Overall fidelity and conditioning alignment</h3>
+      <div class="charts" aria-label="Interactive bar charts of overall generation metrics">
         <div class="charts__legend" aria-hidden="true">
-          <span class="charts__swatch charts__swatch--baseline"></span> Baseline SD
+          <span class="charts__swatch charts__swatch--baseline"></span> RoentGen-v2
           <span class="charts__swatch charts__swatch--fairdiffusion"></span> FairDiffusion
           <span class="charts__swatch charts__swatch--compdiff"></span> CompDiff
           <span class="charts__legend-sep">·</span>
           <span class="charts__best-marker" aria-hidden="true"></span> <span class="charts__star" aria-hidden="true">★</span> best in group
         </div>
         <div class="charts__grid" id="charts-grid" aria-live="polite">
-          <!-- Populated by JS — 2x4 plots: image-quality + demographic-control metrics -->
+          <!-- Populated by JS: paper Figure 3 values -->
         </div>
         <p class="charts__caption">
-          Top row: cross-modality metrics (chest &amp; fundus). Bottom row: demographic-control
-          metrics on chest X-ray only. Hover a bar for details.
+          Paper Figure 3. Top row: FID, FID-RadImageNet, MS-SSIM and mean prompt-alignment AUROC for
+          chest X-ray and fundus. Bottom row: agreement with requested findings and demographics on
+          chest X-ray (BioViL similarity, sex and race accuracy, age RMSE in years). Mean across
+          three runs; hover a bar for the standard deviation. MS-SSIM has no &ldquo;best&rdquo;: it is
+          read against the 0.25&ndash;0.75 reference band.
         </p>
       </div>
+      <p class="results__takeaway">
+        <strong>Takeaway.</strong> CompDiff had the lowest mean FID on both modalities: 74.7 &plusmn; 5.7
+        on chest X-rays versus 88.4 &plusmn; 4.7 for RoentGen-v2 and 85.6 &plusmn; 1.7 for FairDiffusion
+        (a 15% reduction relative to RoentGen-v2), and 60.1 &plusmn; 4.3 on fundus versus 72.7 &plusmn; 3.7
+        and 64.2 &plusmn; 1.8 (17%). On fundus, FairDiffusion had the lowest FID-RadImageNet (5.51 versus
+        5.76), so Inception FID is the primary fundus measure. CompDiff had lower race accuracy
+        (0.949) and higher age error (8.66 years) than the prompt-conditioned baselines; neither
+        difference was statistically distinguishable across the three runs (p&nbsp;=&nbsp;0.11 and
+        p&nbsp;=&nbsp;0.15).
+      </p>
 
-      <h3 class="results__subhead">Table 1 &mdash; Overall generation quality and fairness</h3>
+      <h3 class="results__subhead">Subgroup fidelity</h3>
       <p class="section__caption">
-        Mean (std) across three runs. Hover a value for details; the bar under each value shows
-        how close it is to the best in its column (longer = better).
+        Overall distance and equity-scaled FID (ES-FID), which combines overall fidelity with
+        variation between subgroups; lower is better. Chest uses FID-RadImageNet and fundus uses
+        Inception FID. Means across three runs (paper Figure 5a,b).
         <span class="legend"><span class="legend__swatch"></span> best in column &middot; <strong>CompDiff</strong> row highlighted in teal</span>
       </p>
       <div class="table-wrap">
-        <table class="results-table results-table--compact" data-enhance="true" data-group-by="modality" aria-label="Table 1: overall generation quality and fairness">
+        <table class="results-table results-table--compact" data-enhance="true" data-group-by="modality" aria-label="Overall and equity-scaled fidelity">
           <thead>
             <tr>
               <th rowspan="2">Modality</th>
               <th rowspan="2">Method</th>
-              <th colspan="2" class="col-group">Image Quality</th>
-              <th rowspan="2" data-col="auroc" data-direction="higher" title="Disease AUROC — AUROC of a disease classifier trained on generated data, evaluated on real data (TSTR). Higher is better.">Disease<br>AUROC &uarr;</th>
-              <th colspan="3" class="col-group" title="ES-FID (Equity-Scaled FID): penalizes quality disparities across demographic subgroups — lower is better.">Equity-Scaled FID (ES-FID) &darr;</th>
+              <th rowspan="2" data-col="overall" data-direction="lower" title="Chest: FID-RadImageNet. Fundus: Inception FID. Lower is better.">Overall &darr;</th>
+              <th colspan="4" class="col-group" title="ES-FID (equity-scaled FID): lower is better.">Equity-scaled FID (ES-FID) &darr;</th>
             </tr>
             <tr>
-              <th data-col="fid" data-direction="lower" title="FID: Fréchet Inception Distance using Inception V3. Lower is better.">FID &darr;</th>
-              <th data-col="fid_rad" data-direction="lower" title="FID-RAD: FID using RadImageNet (clinical-domain backbone). Lower is better.">FID-RAD &darr;</th>
-              <th data-col="esfid_sex" data-direction="lower" title="ES-FID across sex subgroups.">Sex</th>
-              <th data-col="esfid_race" data-direction="lower" title="ES-FID across race subgroups.">Race</th>
-              <th data-col="esfid_age" data-direction="lower" title="ES-FID across age subgroups.">Age</th>
+              <th data-col="es_sex" data-direction="lower">Sex</th>
+              <th data-col="es_race" data-direction="lower">Race</th>
+              <th data-col="es_age" data-direction="lower">Age</th>
+              <th data-col="es_asr" data-direction="lower" title="Every age × sex × race cell as the subgroup list.">A&times;S&times;R</th>
             </tr>
           </thead>
           <tbody>
             <tr data-group="Chest X-ray">
               <td rowspan="3" class="modality">Chest<br>X-ray</td>
-              <td class="method">Baseline</td>
-              <td data-col="fid" data-value="82.8"><span class="val">82.8</span><span class="std">(2.2)</span></td>
-              <td data-col="fid_rad" data-value="8.7"><span class="val">8.7</span><span class="std">(0.1)</span></td>
-              <td data-col="auroc" data-value="0.80"><span class="val">0.80</span><span class="std">(0.00)</span></td>
-              <td data-col="esfid_sex" data-value="98.3"><span class="val">98.3</span><span class="std">(1.3)</span></td>
-              <td data-col="esfid_race" data-value="122.9"><span class="val">122.9</span><span class="std">(1.2)</span></td>
-              <td data-col="esfid_age" data-value="111.8"><span class="val">111.8</span><span class="std">(0.7)</span></td>
+              <td class="method">RoentGen-v2</td>
+              <td data-col="overall" data-value="8.6"><span class="val">8.6</span></td>
+              <td data-col="es_sex" data-value="11.0"><span class="val">11.0</span></td>
+              <td data-col="es_race" data-value="10.5"><span class="val">10.5</span></td>
+              <td data-col="es_age" data-value="10.1"><span class="val">10.1</span></td>
+              <td data-col="es_asr" data-value="14.2"><span class="val">14.2</span></td>
             </tr>
             <tr data-group="Chest X-ray">
               <td class="method">FairDiffusion</td>
-              <td data-col="fid" data-value="75.1"><span class="val">75.1</span><span class="std">(0.1)</span></td>
-              <td data-col="fid_rad" data-value="6.2"><span class="val">6.2</span><span class="std">(0.0)</span></td>
-              <td data-col="auroc" data-value="0.74"><span class="val">0.74</span><span class="std">(0.03)</span></td>
-              <td data-col="esfid_sex" data-value="88.6"><span class="val">88.6</span><span class="std">(0.3)</span></td>
-              <td data-col="esfid_race" data-value="115.7"><span class="val">115.7</span><span class="std">(0.5)</span></td>
-              <td data-col="esfid_age" data-value="102.5"><span class="val">102.5</span><span class="std">(0.8)</span></td>
+              <td data-col="overall" data-value="8.9"><span class="val">8.9</span></td>
+              <td data-col="es_sex" data-value="10.2"><span class="val">10.2</span></td>
+              <td data-col="es_race" data-value="11.1"><span class="val">11.1</span></td>
+              <td data-col="es_age" data-value="10.2"><span class="val">10.2</span></td>
+              <td data-col="es_asr" data-value="14.3"><span class="val">14.3</span></td>
             </tr>
             <tr class="row--cd" data-group="Chest X-ray">
               <td class="method">CompDiff</td>
-              <td data-col="fid" data-value="64.3"><span class="val">64.3</span><span class="std">(0.3)</span></td>
-              <td data-col="fid_rad" data-value="6.8"><span class="val">6.8</span><span class="std">(0.1)</span></td>
-              <td data-col="auroc" data-value="0.82"><span class="val">0.82</span><span class="std">(0.01)</span></td>
-              <td data-col="esfid_sex" data-value="78.4"><span class="val">78.4</span><span class="std">(0.1)</span></td>
-              <td data-col="esfid_race" data-value="106.2"><span class="val">106.2</span><span class="std">(0.4)</span></td>
-              <td data-col="esfid_age" data-value="98.3"><span class="val">98.3</span><span class="std">(0.6)</span></td>
+              <td data-col="overall" data-value="6.6"><span class="val">6.6</span></td>
+              <td data-col="es_sex" data-value="8.5"><span class="val">8.5</span></td>
+              <td data-col="es_race" data-value="8.4"><span class="val">8.4</span></td>
+              <td data-col="es_age" data-value="8.0"><span class="val">8.0</span></td>
+              <td data-col="es_asr" data-value="12.1"><span class="val">12.1</span></td>
             </tr>
             <tr data-group="Fundus">
               <td rowspan="3" class="modality">Fundus</td>
-              <td class="method">Baseline</td>
-              <td data-col="fid" data-value="72.2"><span class="val">72.2</span><span class="std">(0.2)</span></td>
-              <td data-col="fid_rad" data-value="6.4"><span class="val">6.4</span><span class="std">(0.0)</span></td>
-              <td data-col="auroc" data-value="0.94"><span class="val">0.94</span></td>
-              <td data-col="esfid_sex" data-value="82.4"><span class="val">82.4</span><span class="std">(1.4)</span></td>
-              <td data-col="esfid_race" data-value="105.7"><span class="val">105.7</span><span class="std">(0.1)</span></td>
-              <td data-col="esfid_age" data-value="97.3"><span class="val">97.3</span><span class="std">(0.8)</span></td>
+              <td class="method">RoentGen-v2</td>
+              <td data-col="overall" data-value="72.7"><span class="val">72.7</span></td>
+              <td data-col="es_sex" data-value="84.4"><span class="val">84.4</span></td>
+              <td data-col="es_race" data-value="111.7"><span class="val">111.7</span></td>
+              <td data-col="es_age" data-value="128.8"><span class="val">128.8</span></td>
+              <td data-col="es_asr" data-value="186.3"><span class="val">186.3</span></td>
             </tr>
             <tr data-group="Fundus">
               <td class="method">FairDiffusion</td>
-              <td data-col="fid" data-value="64.3"><span class="val">64.3</span><span class="std">(0.5)</span></td>
-              <td data-col="fid_rad" data-value="5.0"><span class="val">5.0</span><span class="std">(0.1)</span></td>
-              <td data-col="auroc" data-value="0.93"><span class="val">0.93</span></td>
-              <td data-col="esfid_sex" data-value="76.7"><span class="val">76.7</span><span class="std">(0.9)</span></td>
-              <td data-col="esfid_race" data-value="106.6"><span class="val">106.6</span><span class="std">(2.2)</span></td>
-              <td data-col="esfid_age" data-value="98.1"><span class="val">98.1</span><span class="std">(1.3)</span></td>
+              <td data-col="overall" data-value="64.2"><span class="val">64.2</span></td>
+              <td data-col="es_sex" data-value="76.3"><span class="val">76.3</span></td>
+              <td data-col="es_race" data-value="105.6"><span class="val">105.6</span></td>
+              <td data-col="es_age" data-value="123.0"><span class="val">123.0</span></td>
+              <td data-col="es_asr" data-value="182.2"><span class="val">182.2</span></td>
             </tr>
             <tr class="row--cd" data-group="Fundus">
               <td class="method">CompDiff</td>
-              <td data-col="fid" data-value="54.6"><span class="val">54.6</span><span class="std">(0.4)</span></td>
-              <td data-col="fid_rad" data-value="4.9"><span class="val">4.9</span><span class="std">(0.1)</span></td>
-              <td data-col="auroc" data-value="0.96"><span class="val">0.96</span></td>
-              <td data-col="esfid_sex" data-value="65.2"><span class="val">65.2</span><span class="std">(0.6)</span></td>
-              <td data-col="esfid_race" data-value="97.7"><span class="val">97.7</span><span class="std">(1.4)</span></td>
-              <td data-col="esfid_age" data-value="85.1"><span class="val">85.1</span><span class="std">(1.0)</span></td>
+              <td data-col="overall" data-value="60.1"><span class="val">60.1</span></td>
+              <td data-col="es_sex" data-value="71.1"><span class="val">71.1</span></td>
+              <td data-col="es_race" data-value="101.7"><span class="val">101.7</span></td>
+              <td data-col="es_age" data-value="87.7"><span class="val">87.7</span></td>
+              <td data-col="es_asr" data-value="174.2"><span class="val">174.2</span></td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="results__takeaway">
-        <strong>Takeaway.</strong> CompDiff achieves the best FID on both modalities and the lowest
-        ES-FID across sex, race, and age &mdash; fairer generation with higher overall quality.
+        <strong>Takeaway.</strong> CompDiff had the lowest distance in 28 of 29 overall,
+        equity-scaled and subgroup comparisons; the exception was the Black fundus stratum, where
+        FairDiffusion&rsquo;s mean was lower by 1.1 FID. Among chest X-ray intersections with at least
+        twenty images, CompDiff had the lowest FID-RadImageNet in all 16 cells, reducing cell distance
+        by 14.9% relative to RoentGen-v2 and 18.1% relative to FairDiffusion. The fundus
+        intersectional ES-FID is dominated by dispersion at small cell sizes, so the per-attribute
+        measures are the more reliable fundus comparison.
       </p>
 
-      <h3 class="results__subhead">Table 2 &mdash; FID on selected intersectional subgroups</h3>
+      <h3 class="results__subhead">Distribution coverage</h3>
       <p class="section__caption">
-        Subgroups ordered from common to rare; the percentage under each subgroup is its share of
-        the training set. Lower FID is better. The last row shows CompDiff's % improvement over
-        Baseline &mdash; every subgroup improves, including the rarest.
-      </p>
-      <div class="intersectional-toggle">
-        <button type="button" class="intersectional-tab is-active" data-modality="chest">Chest X-ray</button>
-        <button type="button" class="intersectional-tab" data-modality="fundus">Fundus</button>
-      </div>
-
-      <div class="table-wrap intersectional-table" data-modality="chest">
-        <table class="results-table results-table--intersectional" data-enhance="true" aria-label="Table 2: Chest X-ray FID on intersectional subgroups">
-          <thead>
-            <tr>
-              <th>Subgroup</th>
-              <th data-col="c0" data-rarity="common"><span class="sg__age">60&ndash;80</span><span class="sg__sr">Male &middot; White</span><span class="pct">16% of training</span></th>
-              <th data-col="c1" data-rarity="common"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Male &middot; White</span><span class="pct">14% of training</span></th>
-              <th data-col="c2" data-rarity="moderate"><span class="sg__age">18&ndash;40</span><span class="sg__sr">Male &middot; White</span><span class="pct">4% of training</span></th>
-              <th data-col="c3" data-rarity="moderate"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Female &middot; Hispanic</span><span class="pct">2% of training</span></th>
-              <th data-col="c4" data-rarity="rare"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Male &middot; Hispanic</span><span class="pct">1.5% of training</span></th>
-              <th data-col="c5" data-rarity="rarest"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Male &middot; Asian</span><span class="pct">0.5% of training</span></th>
-              <th data-col="c6" data-rarity="rarest"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Female &middot; Asian</span><span class="pct">0.5% of training</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row" class="method">Baseline</th>
-              <td data-col="c0" data-value="115.2" data-direction="lower"><span class="val">115.2</span><span class="std">(1.2)</span></td>
-              <td data-col="c1" data-value="114.1" data-direction="lower"><span class="val">114.1</span><span class="std">(1.6)</span></td>
-              <td data-col="c2" data-value="130.9" data-direction="lower"><span class="val">130.9</span><span class="std">(1.0)</span></td>
-              <td data-col="c3" data-value="168.5" data-direction="lower"><span class="val">168.5</span><span class="std">(1.9)</span></td>
-              <td data-col="c4" data-value="170.4" data-direction="lower"><span class="val">170.4</span><span class="std">(9.4)</span></td>
-              <td data-col="c5" data-value="192.6" data-direction="lower"><span class="val">192.6</span><span class="std">(4.9)</span></td>
-              <td data-col="c6" data-value="204.0" data-direction="lower"><span class="val">204.0</span><span class="std">(5.4)</span></td>
-            </tr>
-            <tr>
-              <th scope="row" class="method">FairDiffusion</th>
-              <td data-col="c0" data-value="102.9" data-direction="lower"><span class="val">102.9</span><span class="std">(2.4)</span></td>
-              <td data-col="c1" data-value="104.6" data-direction="lower"><span class="val">104.6</span><span class="std">(0.8)</span></td>
-              <td data-col="c2" data-value="125.4" data-direction="lower"><span class="val">125.4</span><span class="std">(3.2)</span></td>
-              <td data-col="c3" data-value="162.0" data-direction="lower"><span class="val">162.0</span><span class="std">(2.4)</span></td>
-              <td data-col="c4" data-value="165.6" data-direction="lower"><span class="val">165.6</span><span class="std">(3.6)</span></td>
-              <td data-col="c5" data-value="201.7" data-direction="lower"><span class="val">201.7</span><span class="std">(15.4)</span></td>
-              <td data-col="c6" data-value="209.4" data-direction="lower"><span class="val">209.4</span><span class="std">(5.2)</span></td>
-            </tr>
-            <tr class="row--cd">
-              <th scope="row" class="method">CompDiff</th>
-              <td data-col="c0" data-value="97.6" data-direction="lower"><span class="val">97.6</span><span class="std">(2.0)</span></td>
-              <td data-col="c1" data-value="89.3" data-direction="lower"><span class="val">89.3</span><span class="std">(1.6)</span></td>
-              <td data-col="c2" data-value="116.9" data-direction="lower"><span class="val">116.9</span><span class="std">(1.6)</span></td>
-              <td data-col="c3" data-value="149.0" data-direction="lower"><span class="val">149.0</span><span class="std">(2.7)</span></td>
-              <td data-col="c4" data-value="135.0" data-direction="lower"><span class="val">135.0</span><span class="std">(7.0)</span></td>
-              <td data-col="c5" data-value="184.5" data-direction="lower"><span class="val">184.5</span><span class="std">(3.0)</span></td>
-              <td data-col="c6" data-value="167.9" data-direction="lower"><span class="val">167.9</span><span class="std">(1.7)</span></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="row--delta" data-compute="delta-vs-baseline">
-              <th scope="row" class="method">CompDiff<br>vs Baseline</th>
-              <td colspan="7" class="delta-placeholder"><!-- populated by JS --></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-
-      <div class="table-wrap intersectional-table is-hidden" data-modality="fundus">
-        <table class="results-table results-table--intersectional" data-enhance="true" aria-label="Table 2: Fundus FID on intersectional subgroups">
-          <thead>
-            <tr>
-              <th>Subgroup</th>
-              <th data-col="f0" data-rarity="common"><span class="sg__age">60&ndash;80</span><span class="sg__sr">Female &middot; White</span><span class="pct">24.5% of training</span></th>
-              <th data-col="f1" data-rarity="common"><span class="sg__age">60&ndash;80</span><span class="sg__sr">Male &middot; White</span><span class="pct">17% of training</span></th>
-              <th data-col="f2" data-rarity="moderate"><span class="sg__age">80+</span><span class="sg__sr">Female &middot; White</span><span class="pct">4% of training</span></th>
-              <th data-col="f3" data-rarity="moderate"><span class="sg__age">18&ndash;40</span><span class="sg__sr">Female &middot; White</span><span class="pct">5% of training</span></th>
-              <th data-col="f4" data-rarity="moderate"><span class="sg__age">80+</span><span class="sg__sr">Male &middot; White</span><span class="pct">3% of training</span></th>
-              <th data-col="f5" data-rarity="rare"><span class="sg__age">40&ndash;60</span><span class="sg__sr">Male &middot; Asian</span><span class="pct">1.5% of training</span></th>
-              <th data-col="f6" data-rarity="rarest"><span class="sg__age">80+</span><span class="sg__sr">Male &middot; Black</span><span class="pct">0.5% of training</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row" class="method">Baseline</th>
-              <td data-col="f0" data-value="103.3" data-direction="lower"><span class="val">103.3</span><span class="std">(5.7)</span></td>
-              <td data-col="f1" data-value="91.6" data-direction="lower"><span class="val">91.6</span><span class="std">(2.6)</span></td>
-              <td data-col="f2" data-value="176.0" data-direction="lower"><span class="val">176.0</span><span class="std">(5.4)</span></td>
-              <td data-col="f3" data-value="132.3" data-direction="lower"><span class="val">132.3</span><span class="std">(6.5)</span></td>
-              <td data-col="f4" data-value="132.5" data-direction="lower"><span class="val">132.5</span><span class="std">(0.8)</span></td>
-              <td data-col="f5" data-value="163.0" data-direction="lower"><span class="val">163.0</span><span class="std">(9.6)</span></td>
-              <td data-col="f6" data-value="229.4" data-direction="lower"><span class="val">229.4</span><span class="std">(2.7)</span></td>
-            </tr>
-            <tr>
-              <th scope="row" class="method">FairDiffusion</th>
-              <td data-col="f0" data-value="101.4" data-direction="lower"><span class="val">101.4</span><span class="std">(0.1)</span></td>
-              <td data-col="f1" data-value="85.5" data-direction="lower"><span class="val">85.5</span><span class="std">(0.4)</span></td>
-              <td data-col="f2" data-value="180.2" data-direction="lower"><span class="val">180.2</span><span class="std">(1.4)</span></td>
-              <td data-col="f3" data-value="128.5" data-direction="lower"><span class="val">128.5</span><span class="std">(7.2)</span></td>
-              <td data-col="f4" data-value="132.9" data-direction="lower"><span class="val">132.9</span><span class="std">(2.0)</span></td>
-              <td data-col="f5" data-value="156.8" data-direction="lower"><span class="val">156.8</span><span class="std">(3.9)</span></td>
-              <td data-col="f6" data-value="300.2" data-direction="lower"><span class="val">300.2</span><span class="std">(29.2)</span></td>
-            </tr>
-            <tr class="row--cd">
-              <th scope="row" class="method">CompDiff</th>
-              <td data-col="f0" data-value="83.9" data-direction="lower"><span class="val">83.9</span><span class="std">(2.1)</span></td>
-              <td data-col="f1" data-value="78.1" data-direction="lower"><span class="val">78.1</span><span class="std">(1.1)</span></td>
-              <td data-col="f2" data-value="155.5" data-direction="lower"><span class="val">155.5</span><span class="std">(1.4)</span></td>
-              <td data-col="f3" data-value="117.1" data-direction="lower"><span class="val">117.1</span><span class="std">(2.5)</span></td>
-              <td data-col="f4" data-value="118.6" data-direction="lower"><span class="val">118.6</span><span class="std">(4.0)</span></td>
-              <td data-col="f5" data-value="146.4" data-direction="lower"><span class="val">146.4</span><span class="std">(4.9)</span></td>
-              <td data-col="f6" data-value="217.8" data-direction="lower"><span class="val">217.8</span><span class="std">(2.1)</span></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="row--delta" data-compute="delta-vs-baseline">
-              <th scope="row" class="method">CompDiff<br>vs Baseline</th>
-              <td colspan="7" class="delta-placeholder"><!-- populated by JS --></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <p class="results__takeaway">
-        <strong>Takeaway.</strong> CompDiff improves FID on <em>every</em> selected subgroup,
-        from the most common (16% of training data) down to the rarest (0.5%). FairDiffusion can
-        even regress on the rarest groups &mdash; on fundus, Age 80+ / Male / Black jumps from
-        229.4 to 300.2 &mdash; confirming that loss reweighting alone cannot compensate when
-        training signal is scarce.
-      </p>
-
-      <h3 class="results__subhead">Table 3 &mdash; Zero-shot generalization to held-out subgroups</h3>
-      <p class="section__caption">
-        These five chest-X-ray demographic intersections were <strong>removed entirely</strong>
-        from training &mdash; the generator never saw a single example from any of them. At
-        inference, each model was asked to generate X-rays for these unseen combinations; lower FID
-        means the generated images look more like the real held-out test set.
+        Full chest X-ray test set, RadImageNet ResNet-50 features, k&nbsp;=&nbsp;10 neighbours; higher
+        is better (paper Table 2). Precision and Density measure fidelity; Recall and Coverage
+        measure how much of the real distribution is reached.
       </p>
       <div class="table-wrap">
-        <table class="results-table results-table--intersectional" data-enhance="true" aria-label="Table 3: zero-shot generalization to held-out demographic subgroups (chest X-ray)">
+        <table class="results-table results-table--compact" data-enhance="true" aria-label="Distributional fidelity and coverage, chest X-ray">
           <thead>
             <tr>
-              <th>Held-out subgroup</th>
-              <th data-col="z0"><span class="sg__age">18&ndash;40</span><span class="sg__sr">Female &middot; Asian</span><span class="pct">unseen</span></th>
-              <th data-col="z1"><span class="sg__age">18&ndash;40</span><span class="sg__sr">Male &middot; Asian</span><span class="pct">unseen</span></th>
-              <th data-col="z2"><span class="sg__age">80+</span><span class="sg__sr">Female &middot; Asian</span><span class="pct">unseen</span></th>
-              <th data-col="z3"><span class="sg__age">80+</span><span class="sg__sr">Male &middot; Asian</span><span class="pct">unseen</span></th>
-              <th data-col="z4"><span class="sg__age">80+</span><span class="sg__sr">Male &middot; Hispanic</span><span class="pct">unseen</span></th>
+              <th>Method</th>
+              <th data-col="prec" data-direction="higher">Precision &uarr;</th>
+              <th data-col="rec" data-direction="higher">Recall &uarr;</th>
+              <th data-col="dens" data-direction="higher">Density &uarr;</th>
+              <th data-col="cov" data-direction="higher">Coverage &uarr;</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row" class="method">Baseline</th>
-              <td data-col="z0" data-value="183.3" data-direction="lower"><span class="val">183.3</span></td>
-              <td data-col="z1" data-value="161.3" data-direction="lower"><span class="val">161.3</span></td>
-              <td data-col="z2" data-value="210.7" data-direction="lower"><span class="val">210.7</span></td>
-              <td data-col="z3" data-value="208.1" data-direction="lower"><span class="val">208.1</span></td>
-              <td data-col="z4" data-value="231.7" data-direction="lower"><span class="val">231.7</span></td>
+              <td class="method">RoentGen-v2</td>
+              <td data-col="prec" data-value="0.329"><span class="val">0.329</span></td>
+              <td data-col="rec" data-value="0.480"><span class="val">0.480</span></td>
+              <td data-col="dens" data-value="0.072"><span class="val">0.072</span></td>
+              <td data-col="cov" data-value="0.084"><span class="val">0.084</span></td>
             </tr>
             <tr>
-              <th scope="row" class="method">FairDiffusion</th>
-              <td data-col="z0" data-value="181.7" data-direction="lower"><span class="val">181.7</span></td>
-              <td data-col="z1" data-value="152.1" data-direction="lower"><span class="val">152.1</span></td>
-              <td data-col="z2" data-value="247.2" data-direction="lower"><span class="val">247.2</span></td>
-              <td data-col="z3" data-value="265.5" data-direction="lower"><span class="val">265.5</span></td>
-              <td data-col="z4" data-value="229.9" data-direction="lower"><span class="val">229.9</span></td>
+              <td class="method">FairDiffusion</td>
+              <td data-col="prec" data-value="0.344"><span class="val">0.344</span></td>
+              <td data-col="rec" data-value="0.234"><span class="val">0.234</span></td>
+              <td data-col="dens" data-value="0.070"><span class="val">0.070</span></td>
+              <td data-col="cov" data-value="0.099"><span class="val">0.099</span></td>
             </tr>
             <tr class="row--cd">
-              <th scope="row" class="method">CompDiff</th>
-              <td data-col="z0" data-value="159.8" data-direction="lower"><span class="val">159.8</span></td>
-              <td data-col="z1" data-value="127.6" data-direction="lower"><span class="val">127.6</span></td>
-              <td data-col="z2" data-value="195.4" data-direction="lower"><span class="val">195.4</span></td>
-              <td data-col="z3" data-value="206.6" data-direction="lower"><span class="val">206.6</span></td>
-              <td data-col="z4" data-value="212.2" data-direction="lower"><span class="val">212.2</span></td>
+              <td class="method">CompDiff</td>
+              <td data-col="prec" data-value="0.396"><span class="val">0.396</span></td>
+              <td data-col="rec" data-value="0.387"><span class="val">0.387</span></td>
+              <td data-col="dens" data-value="0.091"><span class="val">0.091</span></td>
+              <td data-col="cov" data-value="0.139"><span class="val">0.139</span></td>
             </tr>
           </tbody>
-          <tfoot>
-            <tr class="row--delta" data-compute="delta-vs-baseline">
-              <th scope="row" class="method">CompDiff<br>vs Baseline</th>
-              <td colspan="5" class="delta-placeholder"></td>
+        </table>
+      </div>
+
+      <h3 class="results__subhead">Generation at intersections removed from training</h3>
+      <p class="section__caption">
+        Two MIMIC-CXR training variants each withheld eight intersections: Holdout A the eight
+        rarest, Holdout B the eight next rarest. Each method was trained three times per holdout
+        (18 models). FID-RadImageNet compares generated images with real test images from the same
+        withheld intersection.
+      </p>
+      <figure class="figure">
+        <img src="assets/img/paper/fig6_zeroshot.png" loading="lazy" alt="Paper Figure 6: mean held-out-cell FID-RadImageNet for each trained model in Holdout A and Holdout B, and CompDiff minus comparator differences with 95% confidence intervals: minus 2.36 versus RoentGen-v2 and minus 1.25 versus FairDiffusion.">
+        <figcaption>
+          <strong>Paper Figure 6.</strong> (a, b) Mean distance across the eight withheld cells for each
+          trained model (open circles) and the mean of three models (diamond). (c, d) CompDiff minus
+          comparator, averaged equally across cells and holdouts, with pointwise 95%
+          Welch&ndash;Satterthwaite intervals; negative values favour CompDiff.
+        </figcaption>
+      </figure>
+      <p class="results__takeaway">
+        <strong>Takeaway.</strong> CompDiff achieved the lowest mean FID-RadImageNet across three runs
+        in all 16 withheld intersections. The CompDiff minus RoentGen-v2 difference was &minus;2.36
+        (95% CI &minus;3.71 to &minus;1.02); the difference from FairDiffusion was &minus;1.25
+        (&minus;2.57 to 0.08). With Inception features, CompDiff kept the lowest mean in 12 of 16
+        cells. Giving RoentGen-v2 a 4&times; generation budget with verifier selection still left a
+        CompDiff variant best in each of the 12 assessable withheld cells.
+      </p>
+
+      <h3 class="results__subhead">Radiologist assessment of unseen intersections</h3>
+      <p class="section__caption">
+        Two board-certified radiologists, blinded to source, rated chest X-rays from the 16 withheld
+        intersections: 96 rater&ndash;set assessments over 92 distinct sets, 288 image ratings (paper
+        Table 3). Realism 1&ndash;5, prompt correspondence &minus;2 to +2 (mean &plusmn; SD);
+        &ldquo;most realistic&rdquo; is the per-set forced-choice win rate. Real images were a hidden
+        upper anchor in a subset of sets.
+      </p>
+      <div class="table-wrap">
+        <table class="results-table results-table--compact" aria-label="Blinded radiologist assessment">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Realism &uarr;</th>
+              <th>Prompt correspondence &uarr;</th>
+              <th>Most realistic &uarr;</th>
             </tr>
-          </tfoot>
+          </thead>
+          <tbody>
+            <tr class="row--cd">
+              <td class="method">CompDiff</td>
+              <td><span class="val">4.17</span><span class="std">(&plusmn;1.11)</span></td>
+              <td><span class="val">+0.47</span><span class="std">(&plusmn;1.72)</span></td>
+              <td><span class="val">48%</span></td>
+            </tr>
+            <tr>
+              <td class="method">RoentGen-v2</td>
+              <td><span class="val">2.36</span><span class="std">(&plusmn;1.33)</span></td>
+              <td><span class="val">&minus;0.05</span><span class="std">(&plusmn;1.69)</span></td>
+              <td><span class="val">7%</span></td>
+            </tr>
+            <tr>
+              <td class="method">FairDiffusion</td>
+              <td><span class="val">4.13</span><span class="std">(&plusmn;1.05)</span></td>
+              <td><span class="val">+0.01</span><span class="std">(&plusmn;1.74)</span></td>
+              <td><span class="val">37%</span></td>
+            </tr>
+            <tr>
+              <td class="method">Real (hidden anchor)</td>
+              <td><span class="val">4.92</span><span class="std">(&plusmn;0.29)</span></td>
+              <td><span class="val">+0.75</span><span class="std">(&plusmn;1.86)</span></td>
+              <td><span class="val">92%</span></td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <p class="results__takeaway">
-        <strong>Takeaway.</strong> CompDiff beats both Baseline and FairDiffusion on every
-        held-out intersection. FairDiffusion is actually <em>worse than Baseline</em> on the two
-        Age 80+ / Asian groups &mdash; loss reweighting cannot help when a subgroup has literally
-        no training samples. Hierarchical composition lets CompDiff synthesize unseen
-        intersections from the single-attribute and pairwise embeddings it did see.
+        <strong>Takeaway.</strong> Prompt correspondence was higher for CompDiff than for both
+        RoentGen-v2 and FairDiffusion in the mixed-effects analysis (Benjamini&ndash;Hochberg-adjusted
+        p&nbsp;=&nbsp;0.005 and 0.031). Realism for CompDiff and FairDiffusion was close (4.17 and 4.13),
+        both far above RoentGen-v2 (2.36). In the direct preference comparison, CompDiff was chosen
+        over FairDiffusion 44 times to 35, which was not statistically significant
+        (p&nbsp;=&nbsp;0.37).
+      </p>
+
+      <h3 class="results__subhead">Downstream classification</h3>
+      <p class="section__caption">
+        DenseNet classifiers trained on CompDiff or RoentGen-v2 chest images, evaluated on real
+        MIMIC-CXR and external CheXpert test sets. AUROC<sub>8</sub> averages eight diagnostic labels.
+        Four synthetic corpora: natural demographics at 1&times;, 2&times; and 3&times; the real
+        training size, and a demographically balanced corpus.
+      </p>
+      <figure class="figure">
+        <img src="assets/img/paper/fig9_downstream_utility.png" loading="lazy" alt="Paper Figure 9: AUROC8 difference for classifiers trained on synthetic chest images alone, plus 0.0113 on MIMIC-CXR and plus 0.0088 on CheXpert, and per-label AUROC and sensitivity differences at 90% specificity, all favouring CompDiff over RoentGen-v2.">
+        <figcaption>
+          <strong>Paper Figure 9.</strong> Diagnostic utility of CompDiff images relative to RoentGen-v2.
+          (a) AUROC<sub>8</sub> difference when training on synthetic images alone, averaged equally over
+          four corpora, with pointwise 95% Welch intervals from four classifier runs per generator and
+          corpus. (b) Mean AUROC difference per label and (c) mean sensitivity difference at 90%
+          specificity, over the 48 pretrain-then-fine-tune configurations (descriptive averages;
+          the 90% specificity point is exploratory, not a validated clinical threshold).
+        </figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="assets/img/paper/fig10_downstream_subgroups.png" loading="lazy" alt="Paper Figure 10: CompDiff minus RoentGen-v2 AUROC8 gains across the 48 training configurations, per demographic group and for the subgroup with the lowest baseline AUROC within sex, race and age, on MIMIC-CXR and CheXpert.">
+        <figcaption>
+          <strong>Paper Figure 10.</strong> Subgroup gains across the 48-configuration sweep. (a) CompDiff
+          minus RoentGen-v2 AUROC<sub>8</sub> for each sex, race and age group. (b) Gain for the
+          subgroup with the lowest RoentGen-v2 AUROC within each attribute; counts give configurations
+          with a positive gain. Interquartile ranges describe variation across configurations, not
+          confidence intervals.
+        </figcaption>
+      </figure>
+      <p class="results__takeaway">
+        <strong>Takeaway.</strong> Trained on synthetic images alone, CompDiff classifiers reached mean
+        AUROC<sub>8</sub> 0.7962 versus 0.7849 on MIMIC-CXR and 0.7363 versus 0.7275 on CheXpert:
+        differences of +0.0113 (95% CI 0.0067 to 0.0158) and +0.0088 (0.0039 to 0.0137). With
+        synthetic pretraining and real fine-tuning, CompDiff improved AUROC<sub>8</sub> in 40 of 48
+        matched configurations on each test set, and median gains were positive for all 10 sex, race
+        and age groups and for the lowest-performing baseline subgroup within each attribute.
       </p>
 
       <p class="section__note">
-        See the <a href="https://arxiv.org/abs/2603.16551">paper</a> for the downstream classifier
-        evaluation (Table 4) and full ablation study (Table 5).
+        The manuscript also evaluates synthetic cohorts for auditing a fixed classifier and reports
+        the conditioning-interface ablations.
       </p>
       <p class="section__note">
         Pretrained weights are released on Hugging Face:
@@ -612,14 +632,11 @@
       <h2>BibTeX</h2>
       <div class="bibtex">
         <button type="button" class="bibtex__copy" data-target="#bibtex-content">Copy</button>
-<pre id="bibtex-content"><code>@misc{ibrahim2026compdiff,
-      title={CompDiff: Hierarchical Compositional Diffusion for Fair and Zero-Shot Intersectional Medical Image Generation},
-      author={Mahmoud Ibrahim and Bart Elen and Chang Sun and G\"okhan Ertaylan and Michel Dumontier},
-      year={2026},
-      eprint={2603.16551},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2603.16551}
+<pre id="bibtex-content"><code>@unpublished{ibrahim2026compdiff,
+      title={CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion},
+      author={Ibrahim, Mahmoud K. and Elen, Bart and Sun, Chang and Jiblawi, Ahmad and Saleh, Mohammed M. and Ibrahim, Maryam K. and Ertaylan, G\"okhan and Dumontier, Michel},
+      note={Manuscript under review},
+      year={2026}
 }</code></pre>
       </div>
     </section>
@@ -635,7 +652,7 @@
         &nbsp;·&nbsp;
         <a href="https://github.com/mahmoudibrahim98/compdiff-site" target="_blank" rel="noopener">Site source</a>
         &nbsp;·&nbsp;
-        Last updated <time id="last-updated" datetime="2026-04-17">17 April 2026</time>
+        Last updated <time id="last-updated" datetime="2026-09-28">28 September 2026</time>
       </p>
     </footer>
 

@@ -1,6 +1,8 @@
 # compdiff-site
 
-Project site for **CompDiff: Hierarchical Compositional Diffusion for Fair and Zero-Shot Intersectional Medical Image Generation** (MICCAI 2026 submission, arXiv [2603.16551](https://arxiv.org/abs/2603.16551)).
+Project site for **CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion** (journal manuscript under review, content synced to manuscript version 2.2 on 2026-09-28). An earlier conference version is on arXiv [2603.16551](https://arxiv.org/abs/2603.16551).
+
+Site numbers come from the v2.2 manuscript (Figure 3, Figure 5a,b, Tables 2 and 3, Figures 6, 9 and 10); `assets/img/paper/` holds copies of the v2.2 figure PNGs. The gallery images predate v2.2 (April 2026 curation). `docs/AGENT_BRIEFING.md` still describes the April (MICCAI) version.
 
 Live (after Pages is enabled): https://mahmoudibrahim98.github.io/compdiff-site/
 
