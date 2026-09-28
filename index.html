@@ -104,6 +104,21 @@
         two radiologists gave it the highest mean scores for realism and agreement with the clinical
         impression on those unseen intersections.
       </p>
+      <figure class="figure">
+        <img src="assets/img/paper/fig1_study_overview.png" loading="lazy" alt="Paper Figure 1: study overview. (a) Uneven demographic coverage leaves some age, sex and race combinations absent from training. (b) HCN composes supervised demographic tokens that guide diffusion alongside clinical text. (c) Generation assessment on withheld intersections, including a reader study. (d) Downstream learning gains over RoentGen-v2. (e) Fairness auditing with synthetic cohorts.">
+        <figcaption>
+          <strong>Paper Figure 1.</strong> CompDiff: generating across demographic intersections to
+          support learning and fairness auditing. (a) Uneven demographic coverage leaves some
+          combinations of age, sex and race absent from training. (b) HCN composes supervised
+          demographic tokens, which guide diffusion alongside separately encoded clinical text;
+          coverage and model diagrams are schematic. (c) Generation is assessed through a blinded
+          radiologist study of withheld intersections and overall and subgroup fidelity. (d) Synthetic
+          training is evaluated overall and for the weakest demographic groups. (e) Synthetic cohorts
+          audit a fixed classifier, reproducing real-data evaluations and estimating performance on
+          small subgroups. Grey, orange and green denote RoentGen-v2, FairDiffusion and CompDiff; blue
+          denotes real data.
+        </figcaption>
+      </figure>
     </section>
 
     <section id="abstract">
