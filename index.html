@@ -25,8 +25,28 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <nav class="sitenav" id="sitenav" aria-label="Page sections">
+    <a class="sitenav__brand" href="#top">CompDiff</a>
+    <ol class="sitenav__list">
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#results">Results</a>
+        <ol class="sitenav__sub">
+          <li><a href="#res-overall">Overall fidelity</a></li>
+          <li><a href="#res-subgroup">Subgroup fidelity</a></li>
+          <li><a href="#res-coverage">Coverage</a></li>
+          <li><a href="#res-zeroshot">Unseen intersections</a></li>
+          <li><a href="#res-reader">Reader study</a></li>
+          <li><a href="#res-downstream">Downstream</a></li>
+        </ol>
+      </li>
+      <li><a href="#bibtex">BibTeX</a></li>
+    </ol>
+  </nav>
   <main>
-    <header class="hero">
+    <header class="hero" id="top">
       <h1 class="hero__title">
         CompDiff enables fair and zero shot medical image generation across demographic intersections through compositional diffusion
       </h1>
@@ -105,7 +125,7 @@
         impression on those unseen intersections.
       </p>
       <figure class="figure">
-        <img src="assets/img/paper/fig1_study_overview.png" loading="lazy" alt="Paper Figure 1: study overview. (a) Uneven demographic coverage leaves some age, sex and race combinations absent from training. (b) HCN composes supervised demographic tokens that guide diffusion alongside clinical text. (c) Generation assessment on withheld intersections, including a reader study. (d) Downstream learning gains over RoentGen-v2. (e) Fairness auditing with synthetic cohorts.">
+        <img src="assets/img/paper/fig1_study_overview.png" width="1960" height="2173" loading="lazy" alt="Paper Figure 1: study overview. (a) Uneven demographic coverage leaves some age, sex and race combinations absent from training. (b) HCN composes supervised demographic tokens that guide diffusion alongside clinical text. (c) Generation assessment on withheld intersections, including a reader study. (d) Downstream learning gains over RoentGen-v2. (e) Fairness auditing with synthetic cohorts.">
         <figcaption>
           <strong>Paper Figure 1.</strong> CompDiff: generating across demographic intersections to
           support learning and fairness auditing. (a) Uneven demographic coverage leaves some
@@ -239,18 +259,6 @@
           <div class="blueprint__sub">matched to the requested demographic × clinical description</div>
         </div>
       </div>
-
-      <figure class="figure">
-        <img src="assets/img/paper/fig2_architecture.png" loading="lazy" alt="Paper Figure 2: (a) RoentGen-v2 encodes clinical and demographic text together through CLIP, while CompDiff encodes the clinical impression through CLIP and age, sex and race through the Hierarchical Conditioner Network, which adds 4 context tokens. (b) Inside HCN: attribute encoders, pairwise MLPs, a composition MLP, a Gaussian latent and four projected tokens with auxiliary supervision.">
-        <figcaption>
-          <strong>Paper Figure 2.</strong> (a) RoentGen-v2 encodes clinical and demographic text
-          together through CLIP&rsquo;s 77-token context; CompDiff encodes the clinical impression
-          through CLIP and age, sex and race through HCN, which supplies 4 additional context tokens.
-          (b) Inside HCN. The Gaussian latent is sampled during training and set to its mean at
-          inference; dashed arrows mark training-only supervision. The blueprint above is a
-          simplified data-flow view.
-        </figcaption>
-      </figure>
     </section>
 
     <section id="gallery">
@@ -354,7 +362,7 @@
         across three independently trained runs per method and modality.
       </p>
 
-      <h3 class="results__subhead">Overall fidelity and conditioning alignment</h3>
+      <h3 class="results__subhead" id="res-overall">Overall fidelity and conditioning alignment</h3>
       <div class="charts" aria-label="Interactive bar charts of overall generation metrics">
         <div class="charts__legend" aria-hidden="true">
           <span class="charts__swatch charts__swatch--baseline"></span> RoentGen-v2
@@ -385,7 +393,7 @@
         p&nbsp;=&nbsp;0.15).
       </p>
 
-      <h3 class="results__subhead">Subgroup fidelity</h3>
+      <h3 class="results__subhead" id="res-subgroup">Subgroup fidelity</h3>
       <p class="section__caption">
         Overall distance and equity-scaled FID (ES-FID), which combines overall fidelity with
         variation between subgroups; lower is better. Chest uses FID-RadImageNet and fundus uses
@@ -472,7 +480,7 @@
         measures are the more reliable fundus comparison.
       </p>
 
-      <h3 class="results__subhead">Distribution coverage</h3>
+      <h3 class="results__subhead" id="res-coverage">Distribution coverage</h3>
       <p class="section__caption">
         Full chest X-ray test set, RadImageNet ResNet-50 features, k&nbsp;=&nbsp;10 neighbours; higher
         is better (paper Table 2). Precision and Density measure fidelity; Recall and Coverage
@@ -515,7 +523,7 @@
         </table>
       </div>
 
-      <h3 class="results__subhead">Generation at intersections removed from training</h3>
+      <h3 class="results__subhead" id="res-zeroshot">Generation at intersections removed from training</h3>
       <p class="section__caption">
         Two MIMIC-CXR training variants each withheld eight intersections: Holdout A the eight
         rarest, Holdout B the eight next rarest. Each method was trained three times per holdout
@@ -523,7 +531,7 @@
         withheld intersection.
       </p>
       <figure class="figure">
-        <img src="assets/img/paper/fig6_zeroshot.png" loading="lazy" alt="Paper Figure 6: mean held-out-cell FID-RadImageNet for each trained model in Holdout A and Holdout B, and CompDiff minus comparator differences with 95% confidence intervals: minus 2.36 versus RoentGen-v2 and minus 1.25 versus FairDiffusion.">
+        <img src="assets/img/paper/fig6_zeroshot.png" width="1920" height="1300" loading="lazy" alt="Paper Figure 6: mean held-out-cell FID-RadImageNet for each trained model in Holdout A and Holdout B, and CompDiff minus comparator differences with 95% confidence intervals: minus 2.36 versus RoentGen-v2 and minus 1.25 versus FairDiffusion.">
         <figcaption>
           <strong>Paper Figure 6.</strong> (a, b) Mean distance across the eight withheld cells for each
           trained model (open circles) and the mean of three models (diamond). (c, d) CompDiff minus
@@ -540,7 +548,7 @@
         CompDiff variant best in each of the 12 assessable withheld cells.
       </p>
 
-      <h3 class="results__subhead">Radiologist assessment of unseen intersections</h3>
+      <h3 class="results__subhead" id="res-reader">Radiologist assessment of unseen intersections</h3>
       <p class="section__caption">
         Two board-certified radiologists, blinded to source, rated chest X-rays from the 16 withheld
         intersections: 96 rater&ndash;set assessments over 92 distinct sets, 288 image ratings (paper
@@ -595,7 +603,7 @@
         (p&nbsp;=&nbsp;0.37).
       </p>
 
-      <h3 class="results__subhead">Downstream classification</h3>
+      <h3 class="results__subhead" id="res-downstream">Downstream classification</h3>
       <p class="section__caption">
         DenseNet classifiers trained on CompDiff or RoentGen-v2 chest images, evaluated on real
         MIMIC-CXR and external CheXpert test sets. AUROC<sub>8</sub> averages eight diagnostic labels.
@@ -603,7 +611,7 @@
         training size, and a demographically balanced corpus.
       </p>
       <figure class="figure">
-        <img src="assets/img/paper/fig9_downstream_utility.png" loading="lazy" alt="Paper Figure 9: AUROC8 difference for classifiers trained on synthetic chest images alone, plus 0.0113 on MIMIC-CXR and plus 0.0088 on CheXpert, and per-label AUROC and sensitivity differences at 90% specificity, all favouring CompDiff over RoentGen-v2.">
+        <img src="assets/img/paper/fig9_downstream_utility.png" width="1960" height="1641" loading="lazy" alt="Paper Figure 9: AUROC8 difference for classifiers trained on synthetic chest images alone, plus 0.0113 on MIMIC-CXR and plus 0.0088 on CheXpert, and per-label AUROC and sensitivity differences at 90% specificity, all favouring CompDiff over RoentGen-v2.">
         <figcaption>
           <strong>Paper Figure 9.</strong> Diagnostic utility of CompDiff images relative to RoentGen-v2.
           (a) AUROC<sub>8</sub> difference when training on synthetic images alone, averaged equally over
@@ -614,7 +622,7 @@
         </figcaption>
       </figure>
       <figure class="figure">
-        <img src="assets/img/paper/fig10_downstream_subgroups.png" loading="lazy" alt="Paper Figure 10: CompDiff minus RoentGen-v2 AUROC8 gains across the 48 training configurations, per demographic group and for the subgroup with the lowest baseline AUROC within sex, race and age, on MIMIC-CXR and CheXpert.">
+        <img src="assets/img/paper/fig10_downstream_subgroups.png" width="1960" height="1830" loading="lazy" alt="Paper Figure 10: CompDiff minus RoentGen-v2 AUROC8 gains across the 48 training configurations, per demographic group and for the subgroup with the lowest baseline AUROC within sex, race and age, on MIMIC-CXR and CheXpert.">
         <figcaption>
           <strong>Paper Figure 10.</strong> Subgroup gains across the 48-configuration sweep. (a) CompDiff
           minus RoentGen-v2 AUROC<sub>8</sub> for each sex, race and age group. (b) Gain for the

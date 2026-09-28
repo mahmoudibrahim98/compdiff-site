@@ -1551,3 +1551,88 @@ main {
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
+
+/* ---------- Section navigation ----------
+   Narrow screens: sticky top bar, horizontally scrollable.
+   Wide screens (>= 1240px): fixed pane left of the content column. */
+html { scroll-behavior: smooth; }
+section[id], .results__subhead[id], .hero[id] { scroll-margin-top: 64px; }
+
+.sitenav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 16px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+.sitenav__brand {
+  font-weight: 600;
+  color: var(--text);
+  flex: none;
+}
+.sitenav__list,
+.sitenav__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sitenav__list {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.sitenav__list::-webkit-scrollbar { display: none; }
+.sitenav__list a {
+  display: block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.sitenav__list a:hover { color: var(--accent); text-decoration: none; }
+.sitenav__list a.is-active { color: #fff; background: var(--accent); }
+.sitenav__sub { display: none; }
+
+@media (min-width: 1240px) {
+  section[id], .results__subhead[id], .hero[id] { scroll-margin-top: 24px; }
+  .sitenav {
+    position: fixed;
+    top: 3rem;
+    left: max(16px, calc(50% - var(--max-width) / 2 - 220px));
+    width: 190px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: 0;
+  }
+  .sitenav__brand {
+    padding: 0 0.6rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sitenav__list { flex-direction: column; overflow: visible; gap: 0.1rem; }
+  .sitenav__list a {
+    border-radius: 0;
+    border-left: 2px solid transparent;
+    padding: 0.25rem 0.6rem;
+    white-space: normal;
+  }
+  .sitenav__list a.is-active {
+    color: var(--accent);
+    background: transparent;
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+  .sitenav__sub { display: block; margin: 0.1rem 0 0.2rem 0.6rem; }
+  .sitenav__sub a { font-size: 0.8rem; padding: 0.15rem 0.6rem; }
+}

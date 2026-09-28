@@ -571,4 +571,44 @@
       });
     });
   })();
+
+  // Section navigation: highlight the last heading scrolled past.
+  (function () {
+    var nav = document.getElementById("sitenav");
+    if (!nav) return;
+    var links = {};
+    nav.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      var id = a.getAttribute("href").slice(1);
+      if (id && id !== "top") links[id] = a;
+    });
+    // Document order: sections and results subsections interleave correctly.
+    var targets = Array.prototype.filter.call(
+      document.querySelectorAll("section[id], .results__subhead[id]"),
+      function (t) { return links[t.id]; });
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var line = window.innerWidth >= 1240 ? 40 : 90;
+      var current = null;
+      targets.forEach(function (t) { if (t.getBoundingClientRect().top <= line) current = t; });
+      // At the bottom of the page the last section cannot reach the line.
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom && targets.length) current = targets[targets.length - 1];
+      Object.keys(links).forEach(function (id) { links[id].classList.remove("is-active"); });
+      if (!current) return;
+      links[current.id].classList.add("is-active");
+      var parent = current.closest("section[id]");
+      if (parent && parent !== current && links[parent.id]) links[parent.id].classList.add("is-active");
+      if (window.innerWidth < 1240) {
+        var top = links[parent && links[parent.id] ? parent.id : current.id];
+        var list = top.closest(".sitenav__list");
+        if (list) list.scrollLeft = top.offsetLeft - 40;
+      }
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  })();
 })();
